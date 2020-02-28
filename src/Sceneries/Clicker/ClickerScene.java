@@ -8,7 +8,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class ClickerScene implements Scenery {
     private Scene scene;
@@ -26,8 +32,9 @@ public class ClickerScene implements Scenery {
 
     private ClickSquare clickSquare;
 
-    private Image background;
     private pictureRotator pictureRotator;
+    private BufferedImage texture;
+    private File textureFile;
 
     public ClickerScene(Stage primaryStage){
         this.canvasWidth = 1920;
@@ -37,11 +44,18 @@ public class ClickerScene implements Scenery {
         this.clickSquare = new ClickSquare(canvasWidth, canvasHeight);
 
         this.pictureRotator = new pictureRotator();
-        this.background = this.pictureRotator.getImage();
+
+        this.textureFile = new File("textures/broccoli.jpg");
+        System.out.println(this.textureFile.toString());
+        try {
+            this.texture = ImageIO.read(this.textureFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         this.canvas.setOnMouseClicked(event -> {
             if (this.clickSquare.check((int)event.getX(), (int)event.getY())){
-
+                this.pictureRotator.rollImage();
             }
             this.draw();
         });
@@ -65,7 +79,15 @@ public class ClickerScene implements Scenery {
     public void draw(){
         this.g2d.setBackground(Color.BLACK);
         this.g2d.clearRect(0,0, this.canvasWidth, this.canvasHeight);
-        this.g2d.drawImage(this.background, null, null);
+
+        g2d.setPaint(new TexturePaint(this.texture, new Rectangle2D.Double(0,0, 626, 417)));
+        g2d.fill(new Rectangle2D.Double(0,0, this.canvasWidth, this.canvasHeight));
+
+        AffineTransform aT = new AffineTransform();
+        aT.scale(this.pictureRotator.getScale(), this.pictureRotator.getScale());
+        aT.translate(this.canvasWidth/2 - (this.pictureRotator.getWidth() * this.pictureRotator.getScale()/2), 0);
+        this.g2d.drawImage(this.pictureRotator.getImage(), aT, null);
+
         this.clickSquare.draw(g2d);
     }
 

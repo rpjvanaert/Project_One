@@ -67,7 +67,9 @@ public class ClickSquare {
     }
 
     public void draw(FXGraphics2D g2d){
-        g2d.setColor(Color.RED);
+        g2d.setPaint(Color.RED);
         g2d.fill(this.square);
+        g2d.setPaint(Color.WHITE);
+        g2d.draw(this.square);
     }
 }
