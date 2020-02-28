@@ -36,17 +36,22 @@ public class ClickerScene implements Scenery {
     private BufferedImage texture;
     private File textureFile;
 
+    private int count;
+    private int max;
+
     public ClickerScene(Stage primaryStage){
         this.canvasWidth = 1920;
         this.canvasHeight = 880;
         this.canvas = new Canvas(this.canvasWidth, this.canvasHeight);
 
+        this.count = 0;
+        this.max = 14;
+
         this.clickSquare = new ClickSquare(canvasWidth, canvasHeight);
 
         this.pictureRotator = new pictureRotator();
 
-        this.textureFile = new File("textures/broccoli.jpg");
-        System.out.println(this.textureFile.toString());
+        this.textureFile = new File("resource/textures/broccoli.jpg");
         try {
             this.texture = ImageIO.read(this.textureFile);
         } catch (IOException e) {
@@ -56,6 +61,10 @@ public class ClickerScene implements Scenery {
         this.canvas.setOnMouseClicked(event -> {
             if (this.clickSquare.check((int)event.getX(), (int)event.getY())){
                 this.pictureRotator.rollImage();
+                if (++this.count == this.max){
+                    primaryStage.setScene(this.nextScene.getScene());
+                    primaryStage.setTitle(this.nextScene.getTitle());
+                }
             }
             this.draw();
         });
@@ -71,7 +80,8 @@ public class ClickerScene implements Scenery {
         });
 
         this.vBox = new VBox();
-        this.vBox.getChildren().addAll(this.buttonNext, this.canvas);
+        this.vBox.getChildren().add(this.buttonNext);
+        this.vBox.getChildren().add(this.canvas);
 
         this.scene = new Scene(this.vBox);
     }
@@ -80,7 +90,7 @@ public class ClickerScene implements Scenery {
         this.g2d.setBackground(Color.BLACK);
         this.g2d.clearRect(0,0, this.canvasWidth, this.canvasHeight);
 
-        g2d.setPaint(new TexturePaint(this.texture, new Rectangle2D.Double(0,0, 626, 417)));
+        g2d.setPaint(new TexturePaint(this.texture, new Rectangle2D.Double(0,0, this.texture.getWidth(), this.texture.getHeight())));
         g2d.fill(new Rectangle2D.Double(0,0, this.canvasWidth, this.canvasHeight));
 
         AffineTransform aT = new AffineTransform();
