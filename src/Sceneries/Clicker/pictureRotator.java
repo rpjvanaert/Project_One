@@ -13,13 +13,18 @@ public class pictureRotator {
     private Random rng;
     private File imageFolder;
 
+    private ArrayList<BufferedImage> textures;
+    private BufferedImage texture;
+    private File textureFolder;
+
     public pictureRotator(){
         this.images = new ArrayList<>();
+        this.textures = new ArrayList<>();
         this.rng = new Random();
-        this.imageFolder = new File("resource/clicker");
 
+
+        this.imageFolder = new File("resource/clicker");
         for (File fileEntry : this.imageFolder.listFiles()){
-            String filePath = fileEntry.toString().replaceAll("resource", "");
             try {
                 this.images.add(ImageIO.read(fileEntry));
             } catch (IOException e) {
@@ -27,7 +32,16 @@ public class pictureRotator {
             }
         }
 
-        this.rollImage();
+        this.textureFolder = new File("resource/textures");
+        for (File fileEntry : this.textureFolder.listFiles()){
+            try {
+                this.textures.add(ImageIO.read(fileEntry));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.roll();
     }
 
     public double getScale(){
@@ -36,9 +50,16 @@ public class pictureRotator {
 
     public int getWidth(){ return this.currentImage.getWidth(); }
 
-    public void rollImage(){
-        this.currentImage = this.images.get(this.rng.nextInt(this.imageFolder.listFiles().length));
+    public void roll(){
+        this.currentImage = this.images.get(this.rng.nextInt(this.images.size()));
+        this.texture = this.textures.get(this.rng.nextInt(this.textures.size()));
     }
 
     public BufferedImage getImage(){ return this.currentImage; }
+
+    public BufferedImage getTexture(){ return this.texture; }
+
+    public int getTextureWidth(){ return this.texture.getWidth(); }
+
+    public int getTextureHeight(){ return this.texture.getHeight(); }
 }

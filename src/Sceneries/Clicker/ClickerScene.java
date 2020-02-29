@@ -33,8 +33,6 @@ public class ClickerScene implements Scenery {
     private ClickSquare clickSquare;
 
     private pictureRotator pictureRotator;
-    private BufferedImage texture;
-    private File textureFile;
 
     private int count;
     private int max;
@@ -51,17 +49,11 @@ public class ClickerScene implements Scenery {
 
         this.pictureRotator = new pictureRotator();
 
-        this.textureFile = new File("resource/textures/broccoli.jpg");
-        try {
-            this.texture = ImageIO.read(this.textureFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         this.canvas.setOnMouseClicked(event -> {
             if (this.clickSquare.check((int)event.getX(), (int)event.getY())){
-                this.pictureRotator.rollImage();
+                this.pictureRotator.roll();
                 if (++this.count == this.max){
+                    this.count = 0;
                     primaryStage.setScene(this.nextScene.getScene());
                     primaryStage.setTitle(this.nextScene.getTitle());
                 }
@@ -90,7 +82,7 @@ public class ClickerScene implements Scenery {
         this.g2d.setBackground(Color.BLACK);
         this.g2d.clearRect(0,0, this.canvasWidth, this.canvasHeight);
 
-        g2d.setPaint(new TexturePaint(this.texture, new Rectangle2D.Double(0,0, this.texture.getWidth(), this.texture.getHeight())));
+        g2d.setPaint(new TexturePaint(this.pictureRotator.getTexture(), new Rectangle2D.Double(0,0, this.pictureRotator.getTextureWidth(), this.pictureRotator.getTextureHeight())));
         g2d.fill(new Rectangle2D.Double(0,0, this.canvasWidth, this.canvasHeight));
 
         AffineTransform aT = new AffineTransform();
