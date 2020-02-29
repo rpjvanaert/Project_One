@@ -1,5 +1,6 @@
 import Sceneries.Clicker.ClickerMessageScene;
 import Sceneries.Clicker.ClickerScene;
+import Sceneries.CodeCheckerScene;
 import Sceneries.Experimental.ExperimentalScene;
 import Sceneries.IndexScene;
 import Sceneries.OpeningScene;
@@ -20,7 +21,8 @@ public class MainStage extends Application {
         Scenery clickerMSG = new ClickerMessageScene(primaryStage);
         Scenery screenSaver = new ScreenSaverScene(primaryStage);
         Scenery experimental = new ExperimentalScene(primaryStage);
-        Scenery index = new IndexScene(primaryStage, new ArrayList<Scenery>(Arrays.asList(welcome, clicker, screenSaver, experimental)));
+        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental)));
+        Scenery codeChecker = new CodeCheckerScene(primaryStage);
 
 
         welcome.setNextScene(clicker);
@@ -28,6 +30,7 @@ public class MainStage extends Application {
         clickerMSG.setNextScene(screenSaver);
         screenSaver.setNextScene(experimental);
         experimental.setNextScene(index);
+        index.setNextScene(codeChecker);
 
         primaryStage.setScene(welcome.getScene());
         primaryStage.setTitle(welcome.getTitle());

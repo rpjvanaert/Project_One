@@ -1,13 +1,22 @@
 package Sceneries;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class IndexScene implements Scenery {
@@ -31,6 +40,15 @@ public class IndexScene implements Scenery {
             this.gridPane.add(this.presetButton(each.getName(), each), 1, indexI);
             ++indexI;
         }
+        this.gridPane.setBackground(new Background(new BackgroundFill(Color.color((double)222/256, (double)174/256, (double)84/256), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        Text youAreOK = new Text("You Are OK");
+        youAreOK.setFont(Font.font("Candara", FontWeight.BOLD, 200));
+        youAreOK.setFill(Color.color((double)90/256, (double)90/256, (double)255/256));
+        youAreOK.setEffect(new DropShadow());
+        this.gridPane.add(youAreOK, 3, 4);
+
+
 
         this.scene = new Scene(this.gridPane);
     }
@@ -41,25 +59,26 @@ public class IndexScene implements Scenery {
         return  textReturn;
     }
 
-    private Label presetLabel(String text){
-        Label labelReturn = new Label(text);
-        return labelReturn;
-    }
-
     private Button presetButton(String text, Scenery setScene){
         Button buttonReturn = new Button(text);
         buttonReturn.setOnAction(event -> {
             this.primaryStage.setScene(setScene.getScene());
             this.primaryStage.setTitle(setScene.getTitle());
         });
+        buttonReturn.setStyle("-fx-font: 40 Verdana; -fx-base: #3399ff");
         return buttonReturn;
     }
 
-    public void setNextScene(Scenery nextScene){ this.nextScene = nextScene; }
+    public void setNextScene(Scenery nextScene){
+        this.nextScene = nextScene;
+        this.gridPane.add(presetButton("Check Code!", this.nextScene), 0, 4);
+    }
 
     public String getTitle(){ return this.title; }
 
-    public Scene getScene(){ return this.scene; }
+    public Scene getScene(){
+        return this.scene;
+    }
 
     public String getName(){ return this.name; }
 }
