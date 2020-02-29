@@ -9,10 +9,14 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Button;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+
+import java.nio.file.Paths;
 
 public class OpeningScene implements Scenery{
 
@@ -32,6 +36,8 @@ public class OpeningScene implements Scenery{
 
     public OpeningScene(Stage primaryStage){
         this.title = "Bit cheesy, but hey! It's true!";
+
+        music();
 
         this.borderPane = new BorderPane();
 
@@ -61,6 +67,7 @@ public class OpeningScene implements Scenery{
         this.buttonReady.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            this.mediaPlayer.stop();
         });
 
         this.borderPane.setLeft(this.textFlow);
@@ -70,6 +77,14 @@ public class OpeningScene implements Scenery{
 
 
         this.scene = new Scene(this.borderPane);
+    }
+
+    private MediaPlayer mediaPlayer;
+    public void music(){
+        String s = "resource/LearnToLetGo.mp3";
+        Media h = new Media(Paths.get(s).toUri().toString());
+        mediaPlayer = new MediaPlayer(h);
+        mediaPlayer.play();
     }
 
     public Scene getScene(){ return this.scene; }

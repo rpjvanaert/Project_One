@@ -53,7 +53,7 @@ public class ClickerScene implements Scenery {
                 this.pictureRotator.roll();
                 if (++this.count == this.max){
                     this.count = 0;
-                    this.title = "An ugly amount of times you have to click the red square, right? Oh hi this title can change any time btw!";
+                    this.title = "An ugly amount of times you have to click the red square, right? How many times? Oh hi this title can change any time btw!";
                     primaryStage.setScene(this.nextScene.getScene());
                     primaryStage.setTitle(this.nextScene.getTitle());
 

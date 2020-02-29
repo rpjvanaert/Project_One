@@ -7,8 +7,15 @@ import Sceneries.OpeningScene;
 import Sceneries.Scenery;
 import Sceneries.ScreenSaver.ScreenSaverScene;
 import javafx.application.Application;
+import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,6 +40,8 @@ public class MainStage extends Application {
         index.setNextScene(codeChecker);
         codeChecker.setNextScene(index);
 
+        Image icon = new Image(getClass().getResourceAsStream("/tomConfused.jpeg"));
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(welcome.getScene());
         primaryStage.setTitle(welcome.getTitle());
         primaryStage.setHeight(980);
