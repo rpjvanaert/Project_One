@@ -1,11 +1,15 @@
 import Sceneries.Clicker.ClickerMessageScene;
 import Sceneries.Clicker.ClickerScene;
 import Sceneries.Experimental.ExperimentalScene;
+import Sceneries.IndexScene;
 import Sceneries.OpeningScene;
 import Sceneries.Scenery;
 import Sceneries.ScreenSaver.ScreenSaverScene;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainStage extends Application {
 
@@ -16,13 +20,14 @@ public class MainStage extends Application {
         Scenery clickerMSG = new ClickerMessageScene(primaryStage);
         Scenery screenSaver = new ScreenSaverScene(primaryStage);
         Scenery experimental = new ExperimentalScene(primaryStage);
+        Scenery index = new IndexScene(primaryStage, new ArrayList<Scenery>(Arrays.asList(welcome, clicker, screenSaver, experimental)));
 
 
         welcome.setNextScene(clicker);
         clicker.setNextScene(clickerMSG);
         clickerMSG.setNextScene(screenSaver);
         screenSaver.setNextScene(experimental);
-        experimental.setNextScene(welcome);
+        experimental.setNextScene(index);
 
         primaryStage.setScene(welcome.getScene());
         primaryStage.setTitle(welcome.getTitle());

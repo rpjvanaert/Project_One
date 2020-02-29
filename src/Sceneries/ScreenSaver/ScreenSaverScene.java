@@ -186,4 +186,6 @@ public class ScreenSaverScene implements Scenery{
     }
 
     public String getTitle(){ return "Screen Saver Exercise"; }
+
+    public String getName() { return "Screen Saver"; }
 }

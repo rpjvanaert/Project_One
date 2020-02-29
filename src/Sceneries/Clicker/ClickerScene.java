@@ -99,4 +99,6 @@ public class ClickerScene implements Scenery {
     public void setNextScene(Scenery nextScene){ this.nextScene = nextScene; }
 
     public String getTitle(){ return this.title; }
+
+    public String getName(){ return "Clicker"; }
 }

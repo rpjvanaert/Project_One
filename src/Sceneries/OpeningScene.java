@@ -79,4 +79,6 @@ public class OpeningScene implements Scenery{
     public void setNextScene(Scenery nextScene){
         this.nextScene = nextScene;
     }
+
+    public String getName(){ return "Welcome"; }
 }

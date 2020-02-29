@@ -20,6 +20,7 @@ public class ExperimentalScene implements Scenery {
     private Scenery nextScene;
     private String title;
     private Scene scene;
+    private int timesVisited;
 
     private VBox vBox;
     private Button buttonNext;
@@ -39,6 +40,7 @@ public class ExperimentalScene implements Scenery {
         this.canvas = new Canvas(1920, 880);
         this.g2d = new FXGraphics2D(this.canvas.getGraphicsContext2D());
         this.draw();
+        this.timesVisited = 1;
 
         this.fps = 30;
         this.animationSpeed = 1.0f/10.0f;
@@ -58,6 +60,10 @@ public class ExperimentalScene implements Scenery {
 
         this.buttonNext = new Button("Next Scene");
         this.buttonNext.setOnAction(event -> {
+            ++this.timesVisited;
+            if (this.timesVisited >= 3){
+                this.title = "Three time's the charm, but honestly YOU are my charm <3 ! Number for code: 3.";
+            }
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
         });
@@ -87,7 +93,6 @@ public class ExperimentalScene implements Scenery {
         if (timeElapsed >= 1.0f /this.animationSpeed * 10.0f){
             this.beginTime = System.currentTimeMillis();
             ++this.indexAnimation;
-            System.out.println("INNNNN");
         }
 
         double frameTime = 1 / this.fps;
@@ -112,4 +117,6 @@ public class ExperimentalScene implements Scenery {
     public void setNextScene(Scenery nextScene){ this.nextScene = nextScene; }
 
     public Scene getScene(){ return this.scene; }
+
+    public String getName(){ return "Animation"; }
 }

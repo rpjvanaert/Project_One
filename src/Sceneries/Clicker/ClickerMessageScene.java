@@ -64,4 +64,6 @@ public class ClickerMessageScene implements Scenery {
     public Scene getScene(){
         return this.scene;
     }
+
+    public String getName(){ return "Clicker Message"; }
 }
