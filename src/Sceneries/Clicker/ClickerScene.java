@@ -8,17 +8,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
 
 public class ClickerScene implements Scenery {
     private Scene scene;
     private Scenery nextScene;
+    private String title;
 
     private VBox vBox;
 
@@ -41,6 +39,7 @@ public class ClickerScene implements Scenery {
         this.canvasWidth = 1920;
         this.canvasHeight = 880;
         this.canvas = new Canvas(this.canvasWidth, this.canvasHeight);
+        this.title = "Clicker!";
 
         this.count = 0;
         this.max = 14;
@@ -54,8 +53,10 @@ public class ClickerScene implements Scenery {
                 this.pictureRotator.roll();
                 if (++this.count == this.max){
                     this.count = 0;
+                    this.title = "An ugly amount of times you have the red square, right? Oh hi this title can change any time btw!";
                     primaryStage.setScene(this.nextScene.getScene());
                     primaryStage.setTitle(this.nextScene.getTitle());
+
                 }
             }
             this.draw();
@@ -97,5 +98,5 @@ public class ClickerScene implements Scenery {
 
     public void setNextScene(Scenery nextScene){ this.nextScene = nextScene; }
 
-    public String getTitle(){ return "Clicker!"; }
+    public String getTitle(){ return this.title; }
 }
