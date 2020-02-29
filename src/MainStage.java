@@ -1,5 +1,6 @@
 import Sceneries.Clicker.ClickerMessageScene;
 import Sceneries.Clicker.ClickerScene;
+import Sceneries.Experimental.ExperimentalScene;
 import Sceneries.OpeningScene;
 import Sceneries.Scenery;
 import Sceneries.ScreenSaver.ScreenSaverScene;
@@ -14,12 +15,14 @@ public class MainStage extends Application {
         Scenery clicker = new ClickerScene(primaryStage);
         Scenery clickerMSG = new ClickerMessageScene(primaryStage);
         Scenery screenSaver = new ScreenSaverScene(primaryStage);
+        Scenery experimental = new ExperimentalScene(primaryStage);
 
 
         welcome.setNextScene(clicker);
         clicker.setNextScene(clickerMSG);
         clickerMSG.setNextScene(screenSaver);
-        screenSaver.setNextScene(clicker);
+        screenSaver.setNextScene(experimental);
+        experimental.setNextScene(welcome);
 
         primaryStage.setScene(welcome.getScene());
         primaryStage.setTitle(welcome.getTitle());
