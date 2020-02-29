@@ -1,11 +1,12 @@
 package Sceneries;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -26,6 +27,7 @@ public class CodeCheckerScene implements Scenery {
     private ArrayList<Integer> correctAnswers;
 
     public CodeCheckerScene(Stage primaryStage){
+        this.title = "Worth every hour I've put into this creation.";
         Text title = new Text("Are you OK?");
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 100));
 
@@ -34,26 +36,52 @@ public class CodeCheckerScene implements Scenery {
         this.checkBoxes = new ArrayList<>(this.correctAnswers.size());
 
         for (int i = 1; i <= this.correctAnswers.size(); ++i){
-            TextField adding = new TextField("Number " + i);
-            adding.setPrefWidth(100);
-            adding.setPrefHeight(40);
+            TextField adding = new TextField("n. " + i);
+            adding.setMaxWidth(80);
+            adding.setMaxHeight(10);
+            adding.setStyle("-fx-font: 10 Verdana;");
             this.checkBoxes.add(adding);
             this.hBox.getChildren().add(adding);
             if (i < this.correctAnswers.size()){
-                Label label = new Label("-");
-                label.setPrefWidth(75);
+                Label label = new Label("-----");
+                label.setStyle("-fx-font: 20 Verdana;");
+                label.setMaxWidth(20);
                 this.hBox.getChildren().add(label);
             }
         }
 
         Button checkButton = new Button("Check.");
-        checkButton.setStyle("-fx-font: 40 Verdana; -fx-base: blue;");
+        checkButton.setStyle("-fx-font: 40 Verdana; -fx-base: #3399ff;");
+        checkButton.setOnAction(event -> {
+            boolean correct = true;
+            for(int each : this.correctAnswers){
+                if (each == Integer.parseInt(this.checkBoxes.get(this.correctAnswers.indexOf(each)).getText())){
+
+                } else {
+                    correct = false;
+                }
+
+            }
+            if (correct){
+                System.out.println("CORRECT!!!");
+            }
+        });
+
+        Button indexButton = new Button("Return to Index");
+        indexButton.setStyle("-fx-font: 40 Verdana; -fx-base: #3399ff;");
+        indexButton.setOnAction(event -> {
+            primaryStage.setScene(this.nextScene.getScene());
+            primaryStage.setTitle(this.nextScene.getTitle());
+        });
 
         this.borderPane = new BorderPane();
+        this.borderPane.setBackground(new Background(new BackgroundFill(Color.color((double)222/256, (double)174/256, (double)84/256), CornerRadii.EMPTY, Insets.EMPTY)));
 
         this.borderPane.setTop(title);
         this.borderPane.setCenter(this.hBox);
-        this.borderPane.setBottom(checkButton);
+        HBox hboxButtons = new HBox();
+        hboxButtons.getChildren().addAll(checkButton, indexButton);
+        this.borderPane.setBottom(hboxButtons);
         this.scene = new Scene(this.borderPane);
 
     }
@@ -68,10 +96,6 @@ public class CodeCheckerScene implements Scenery {
 
     public String getTitle() {
         return title;
-    }
-
-    public Scenery getNextScene() {
-        return nextScene;
     }
 
     public void setNextScene(Scenery nextScene) {
