@@ -64,9 +64,9 @@ public class ScreenSaverScene implements Scenery{
         this.heightCanvas = 880;
 
         this.errorText = new Label(
-                "Although you must use '-'\n" +
-                "to get the number for this part,\n" +
-                "anything other than that or numbers,\nwon't work...");
+                "The only non-number character\n" +
+                "you can use is '-'. \n" +
+                "When we made it official.\nOh you light up my sky!");
         this.errorText.setStyle("-fx-font: 30 Leelawadee; -fx-border-color: transparent; -fx-border-width: 7; -fx-text-fill: white;");
 
         this.buttonClose = new Button("You are OK");

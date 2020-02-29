@@ -31,6 +31,7 @@ public class MainStage extends Application {
         screenSaver.setNextScene(experimental);
         experimental.setNextScene(index);
         index.setNextScene(codeChecker);
+        codeChecker.setNextScene(index);
 
         primaryStage.setScene(welcome.getScene());
         primaryStage.setTitle(welcome.getTitle());
