@@ -41,12 +41,7 @@ public class testPlayer extends Application {
         this.playing = true;
 
         mediaPlayer.setOnEndOfMedia(() -> {
-            this.index++;
-            if (index >= this.mediaList.size()){
-                index = 0;
-            }
-            this.mediaPlayer = new MediaPlayer(this.mediaList.get(index));
-            this.mediaPlayer.play();
+            shiftIndex(1);
         });
 
         HBox hBox = new HBox();
@@ -94,6 +89,11 @@ public class testPlayer extends Application {
             }
         }
         this.mediaPlayer = new MediaPlayer(this.mediaList.get(this.index));
+
+        mediaPlayer.setOnEndOfMedia(() -> {
+            shiftIndex(1);
+        });
+
         this.mediaPlayer.play();
     }
 }
