@@ -1,5 +1,6 @@
 package Sceneries.Clicker;
 
+import Sceneries.Player;
 import Sceneries.Scenery;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,19 +17,22 @@ import javafx.stage.Stage;
 public class ClickerMessageScene implements Scenery {
     private Scenery nextScene;
     private Scene scene;
+    private String songPath = "";
 
     private Button buttonNext;
     private BorderPane borderPane;
 
     private String title;
 
-    public ClickerMessageScene(Stage primaryStage){
+    public ClickerMessageScene(Stage primaryStage, Player player){
         this.title = "Tip: how many squares did you have to click?";
 
         this.buttonNext = new Button("Next Scene");
         this.buttonNext.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
         TextFlow textFlow = new TextFlow();
@@ -66,4 +70,6 @@ public class ClickerMessageScene implements Scenery {
     }
 
     public String getName(){ return "Clicker Message"; }
+
+    public String getSongPath(){ return this.songPath; }
 }

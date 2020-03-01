@@ -21,8 +21,10 @@ import java.util.Arrays;
 
 public class CodeCheckerScene implements Scenery {
     private Scenery nextScene;
+    private Scenery endScene;
     private Scene scene;
     private String title;
+    private String songPath = "resource/Music/BeatOfMyHeart.mp3";
 
     private BorderPane borderPane;
     private HBox hBox;
@@ -30,10 +32,12 @@ public class CodeCheckerScene implements Scenery {
     private ArrayList<TextField> checkBoxes;
     private ArrayList<Integer> correctAnswers;
 
-    public CodeCheckerScene(Stage primaryStage){
+    public CodeCheckerScene(Stage primaryStage, Scenery endScene, Player player){
         this.title = "Worth every hour I've put into this creation.";
         Text title = new Text("Are you OK?");
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 100));
+
+        this.endScene = endScene;
 
         this.hBox = new HBox();
         this.correctAnswers = new ArrayList<>(Arrays.asList(14, 1, 3));
@@ -69,6 +73,10 @@ public class CodeCheckerScene implements Scenery {
             }
             if (correct){
                 System.out.println("CORRECT!!!");
+                primaryStage.setScene(this.endScene.getScene());
+                primaryStage.setTitle(this.endScene.getTitle());
+                player.stop();
+                player.setSong(this.endScene.getSongPath());
             }
         });
 
@@ -77,6 +85,8 @@ public class CodeCheckerScene implements Scenery {
         indexButton.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
         this.borderPane = new BorderPane();
@@ -106,4 +116,6 @@ public class CodeCheckerScene implements Scenery {
     public void setNextScene(Scenery nextScene) {
         this.nextScene = nextScene;
     }
+
+    public String getSongPath(){ return this.songPath; }
 }

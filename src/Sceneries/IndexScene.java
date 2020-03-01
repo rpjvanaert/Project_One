@@ -25,10 +25,13 @@ public class IndexScene implements Scenery {
     private String title;
     private String name;
     private Scene scene;
+    private String songPath = "resource/Music/Inside of You.mp3";
+    private Player player;
 
     private GridPane gridPane;
 
-    public IndexScene(Stage primaryStage, ArrayList<Scenery> sceneries){
+    public IndexScene(Stage primaryStage, ArrayList<Scenery> sceneries, Player player){
+        this.player = player;
         this.title = "Index";
         this.name = this.title;
         this.primaryStage = primaryStage;
@@ -64,6 +67,8 @@ public class IndexScene implements Scenery {
         buttonReturn.setOnAction(event -> {
             this.primaryStage.setScene(setScene.getScene());
             this.primaryStage.setTitle(setScene.getTitle());
+            player.stop();
+            this.player.setSong(setScene.getSongPath());
         });
         buttonReturn.setStyle("-fx-font: 40 Verdana; -fx-base: #3399ff");
         return buttonReturn;
@@ -81,4 +86,6 @@ public class IndexScene implements Scenery {
     }
 
     public String getName(){ return this.name; }
+
+    public String getSongPath(){ return this.songPath; }
 }

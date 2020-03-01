@@ -1,5 +1,6 @@
 package Sceneries.Clicker;
 
+import Sceneries.Player;
 import Sceneries.Scenery;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,6 +18,7 @@ public class ClickerScene implements Scenery {
     private Scene scene;
     private Scenery nextScene;
     private String title;
+    private String songPath = "resource/Music/Soundtrack/Jason Mraz - I'm Yours (HQ).mp3";
 
     private VBox vBox;
 
@@ -35,7 +37,7 @@ public class ClickerScene implements Scenery {
     private int count;
     private int max;
 
-    public ClickerScene(Stage primaryStage){
+    public ClickerScene(Stage primaryStage, Player player){
         this.canvasWidth = 1920;
         this.canvasHeight = 880;
         this.canvas = new Canvas(this.canvasWidth, this.canvasHeight);
@@ -56,7 +58,6 @@ public class ClickerScene implements Scenery {
                     this.title = "An ugly amount of times you have to click the red square, right? How many times? Oh hi this title can change any time btw!";
                     primaryStage.setScene(this.nextScene.getScene());
                     primaryStage.setTitle(this.nextScene.getTitle());
-
                 }
             }
             this.draw();
@@ -101,4 +102,6 @@ public class ClickerScene implements Scenery {
     public String getTitle(){ return this.title; }
 
     public String getName(){ return "Clicker"; }
+
+    public String getSongPath(){ return this.songPath; }
 }
