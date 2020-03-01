@@ -7,4 +7,5 @@ public interface Scenery {
     void setNextScene(Scenery nextScene);
     String getTitle();
     String getName();
+    String getSongPath();
 }

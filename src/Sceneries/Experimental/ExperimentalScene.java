@@ -1,5 +1,6 @@
 package Sceneries.Experimental;
 
+import Sceneries.Player;
 import Sceneries.Scenery;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -21,6 +22,7 @@ public class ExperimentalScene implements Scenery {
     private String title;
     private Scene scene;
     private int timesVisited;
+    private String songPath = "resource/Music/Soundtrack/Katrina & The Waves - Walking On Sunshine (Official Video).mp3";
 
     private VBox vBox;
     private Button buttonNext;
@@ -34,7 +36,7 @@ public class ExperimentalScene implements Scenery {
     private float animationSpeed;
     private long beginTime;
 
-    public ExperimentalScene(Stage primaryStage){
+    public ExperimentalScene(Stage primaryStage, Player player){
         this.title = "EXPERIMENTAL";
         this.init();
         this.canvas = new Canvas(1920, 880);
@@ -66,6 +68,8 @@ public class ExperimentalScene implements Scenery {
             }
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
         this.vBox = new VBox();
@@ -119,4 +123,6 @@ public class ExperimentalScene implements Scenery {
     public Scene getScene(){ return this.scene; }
 
     public String getName(){ return "Animation"; }
+
+    public String getSongPath(){ return this.songPath; }
 }

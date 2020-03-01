@@ -1,5 +1,4 @@
 package Sceneries;
-
 import javafx.scene.Scene;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.InnerShadow;
@@ -23,6 +22,7 @@ public class OpeningScene implements Scenery{
     private Scene scene;
     private Scenery nextScene;
     private String title;
+    private String songPath = "resource/Music/Soundtrack/The Lightning Thief (Original Cast Recording) 17. Son of Poseidon (Audio).mp3";
 
     private BorderPane borderPane;
     private TextFlow textFlow;
@@ -34,9 +34,9 @@ public class OpeningScene implements Scenery{
 
     private Button buttonReady;
 
-    public OpeningScene(Stage primaryStage){
+    public OpeningScene(Stage primaryStage, Player player){
         this.title = "Bit cheesy, but hey! It's true!";
-
+        player.setSong(this.songPath);
         this.borderPane = new BorderPane();
 
         this.textFlow = new TextFlow();
@@ -60,11 +60,13 @@ public class OpeningScene implements Scenery{
         this.imageViewSolo.setFitWidth(640);
         this.imageViewSolo.setFitHeight(380);
 
-        this.buttonReady = new Button("Ready? Player One!");
+        this.buttonReady = new Button("Ready? Sceneries.Player One!");
         this.buttonReady.setStyle("-fx-font: 100 Leelawadee; -fx-border-color: transparent; -fx-border-width: 30; -fx-base: #2d46bf;");
         this.buttonReady.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
         this.borderPane.setLeft(this.textFlow);
@@ -85,4 +87,6 @@ public class OpeningScene implements Scenery{
     }
 
     public String getName(){ return "Welcome"; }
+
+    public String getSongPath(){ return this.songPath; }
 }

@@ -1,21 +1,12 @@
+import Sceneries.*;
 import Sceneries.Clicker.ClickerMessageScene;
 import Sceneries.Clicker.ClickerScene;
-import Sceneries.CodeCheckerScene;
 import Sceneries.Experimental.ExperimentalScene;
-import Sceneries.IndexScene;
-import Sceneries.OpeningScene;
-import Sceneries.Scenery;
 import Sceneries.ScreenSaver.ScreenSaverScene;
 import javafx.application.Application;
 import javafx.scene.image.Image;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -23,13 +14,17 @@ public class MainStage extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scenery welcome = new OpeningScene(primaryStage);
-        Scenery clicker = new ClickerScene(primaryStage);
-        Scenery clickerMSG = new ClickerMessageScene(primaryStage);
-        Scenery screenSaver = new ScreenSaverScene(primaryStage);
-        Scenery experimental = new ExperimentalScene(primaryStage);
-        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental)));
-        Scenery codeChecker = new CodeCheckerScene(primaryStage);
+        Player player =  new Player();
+        Scenery welcome = new OpeningScene(primaryStage, player);
+        Scenery clicker = new ClickerScene(primaryStage, player);
+        Scenery clickerMSG = new ClickerMessageScene(primaryStage, player);
+        Scenery screenSaver = new ScreenSaverScene(primaryStage, player);
+        Scenery experimental = new ExperimentalScene(primaryStage, player);
+        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental)), player);
+        Scenery endScene = new EndScene(primaryStage, player);
+        Scenery codeChecker = new CodeCheckerScene(primaryStage, endScene, player);
+
+
 
 
         welcome.setNextScene(clicker);

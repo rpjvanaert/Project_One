@@ -1,5 +1,6 @@
 package Sceneries.ScreenSaver;
 
+import Sceneries.Player;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ import java.awt.*;
 
 public class ScreenSaverScene implements Scenery{
     private Scenery nextScene;
+    private String songPath = "resource/Music/Soundtrack/Star Wars Main Theme (Full).mp3";
 
     private Scene scene;
     private HBox hBox;
@@ -53,7 +55,8 @@ public class ScreenSaverScene implements Scenery{
     private Stage popUpWindow;
     private Button buttonClose;
 
-    public ScreenSaverScene(Stage primaryStage){
+    public ScreenSaverScene(Stage primaryStage, Player player){
+
         this.saverPoints = 6;
         this.stepSize = 10;
         this.fadeLines = 30;
@@ -97,6 +100,8 @@ public class ScreenSaverScene implements Scenery{
         this.buttonNext.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
 
@@ -188,4 +193,6 @@ public class ScreenSaverScene implements Scenery{
     public String getTitle(){ return "Screen Saver Exercise"; }
 
     public String getName() { return "Screen Saver"; }
+
+    public String getSongPath(){ return this.songPath; }
 }
