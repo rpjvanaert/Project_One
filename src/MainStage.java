@@ -1,6 +1,7 @@
 import Sceneries.*;
 import Sceneries.Clicker.ClickerMessageScene;
 import Sceneries.Clicker.ClickerScene;
+import Sceneries.End.EndScene;
 import Sceneries.Experimental.ExperimentalScene;
 import Sceneries.ScreenSaver.ScreenSaverScene;
 import javafx.application.Application;
