@@ -25,7 +25,7 @@ public class IndexScene implements Scenery {
     private String title;
     private String name;
     private Scene scene;
-    private String songPath = "resource/Music/Inside of You.mp3";
+    private String songPath = "resource/Music/I Feel It All Over.mp3";
     private Player player;
 
     private GridPane gridPane;

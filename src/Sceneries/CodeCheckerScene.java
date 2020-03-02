@@ -24,7 +24,7 @@ public class CodeCheckerScene implements Scenery {
     private Scenery endScene;
     private Scene scene;
     private String title;
-    private String songPath = "resource/Music/BeatOfMyHeart.mp3";
+    private String songPath = "resource/Music/Forevermore.mp3";
 
     private BorderPane borderPane;
     private HBox hBox;
