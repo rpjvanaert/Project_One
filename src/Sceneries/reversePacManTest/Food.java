@@ -1,6 +1,7 @@
-package reversePacManTest;
+package Sceneries.reversePacManTest;
 
-import java.awt.*;
+import org.jfree.fx.FXGraphics2D;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -25,7 +26,7 @@ public class Food implements  Blob{
         this.rotationSpeed = 0.1;
     }
 
-    public void update(ArrayList<Blob> food)
+    public boolean update(ArrayList<Blob> food)
     {
         double targetAngle = Math.atan2(this.target.getY() - this.position.getY(),
                                         this.target.getX() - this.position.getX());
@@ -61,9 +62,10 @@ public class Food implements  Blob{
         } else {
             this.angle -= this.rotationSpeed*2;
         }
+        return false;
     }
 
-    public void draw(Graphics2D g)
+    public void draw(FXGraphics2D g)
     {
         g.drawImage(sprite, getTransform(), null);
     }

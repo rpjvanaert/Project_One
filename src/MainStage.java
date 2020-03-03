@@ -4,6 +4,7 @@ import Sceneries.Clicker.ClickerScene;
 import Sceneries.End.EndScene;
 import Sceneries.Experimental.ExperimentalScene;
 import Sceneries.ScreenSaver.ScreenSaverScene;
+import Sceneries.reversePacManTest.NpcDemo;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -21,7 +22,8 @@ public class MainStage extends Application {
         Scenery clickerMSG = new ClickerMessageScene(primaryStage, player);
         Scenery screenSaver = new ScreenSaverScene(primaryStage, player);
         Scenery experimental = new ExperimentalScene(primaryStage, player);
-        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental)), player);
+        Scenery runningMan = new NpcDemo(primaryStage, player);
+        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental, runningMan)), player);
         Scenery endScene = new EndScene(primaryStage, player);
         Scenery codeChecker = new CodeCheckerScene(primaryStage, endScene, player);
 
@@ -32,7 +34,8 @@ public class MainStage extends Application {
         clicker.setNextScene(clickerMSG);
         clickerMSG.setNextScene(screenSaver);
         screenSaver.setNextScene(experimental);
-        experimental.setNextScene(index);
+        experimental.setNextScene(runningMan);
+        runningMan.setNextScene(index);
         index.setNextScene(codeChecker);
         codeChecker.setNextScene(index);
 
