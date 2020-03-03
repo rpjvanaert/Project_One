@@ -75,7 +75,7 @@ public class HeartAnimation {
         if (this.timer == 15){
             ++this.indexAnimation;
             if (this.indexAnimation >= this.amountHearts){
-                this.indexAnimation = 1;
+                this.indexAnimation = 0;
             }
             this.timer = 0;
         }

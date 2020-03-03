@@ -60,7 +60,7 @@ public class OpeningScene implements Scenery{
         this.imageViewSolo.setFitWidth(640);
         this.imageViewSolo.setFitHeight(380);
 
-        this.buttonReady = new Button("Ready? Sceneries.Player One!");
+        this.buttonReady = new Button("Ready? Player One!");
         this.buttonReady.setStyle("-fx-font: 100 Leelawadee; -fx-border-color: transparent; -fx-border-width: 30; -fx-base: #2d46bf;");
         this.buttonReady.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());

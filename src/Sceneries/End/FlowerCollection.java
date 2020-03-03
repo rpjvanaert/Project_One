@@ -19,11 +19,13 @@ public class FlowerCollection {
     private int count;
     private FXGraphics2D g2d;
     private int width;
+    private int height;
 
-    public FlowerCollection(int width, FXGraphics2D g2d){
+    public FlowerCollection(int width, int height, FXGraphics2D g2d){
         this.flowers = new ArrayList<>();
         this.index = 0;
         this.width = width;
+        this.height = height;
         this.g2d = g2d;
         this.count = 0;
         File imageFolder = new File("resource/Flowers");

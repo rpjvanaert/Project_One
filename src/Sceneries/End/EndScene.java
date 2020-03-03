@@ -27,7 +27,7 @@ public class EndScene implements Scenery {
         this.canvas = new Canvas(1920, 980);
         this.g2d = new FXGraphics2D(this.canvas.getGraphicsContext2D());
 
-        this.flowerCollection = new FlowerCollection((int)this.canvas.getWidth(), this.g2d);
+        this.flowerCollection = new FlowerCollection((int)this.canvas.getWidth(), (int)this.canvas.getHeight(), this.g2d);
         this.heartAnimation = new HeartAnimation((int)this.canvas.getWidth(), (int)this.canvas.getHeight(), this.g2d);
 
         this.draw();
