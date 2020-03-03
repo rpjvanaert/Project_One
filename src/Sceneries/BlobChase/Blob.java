@@ -1,4 +1,4 @@
-package Sceneries.reversePacManTest;
+package Sceneries.BlobChase;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.geom.AffineTransform;
@@ -12,4 +12,5 @@ public interface Blob {
     void setTarget(Point2D target);
     double distance(Blob other, Point2D newPosition);
     Point2D getPosition();
+    void setSpeed(int speed);
 }

@@ -1,4 +1,4 @@
-package Sceneries.reversePacManTest;
+package Sceneries.BlobChase;
 
 import org.jfree.fx.FXGraphics2D;
 
@@ -89,5 +89,8 @@ public class BlobMan implements  Blob{
 
     public Point2D getPosition() {
         return position;
+    }
+
+    public void setSpeed(int speed){
     }
 }

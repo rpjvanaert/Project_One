@@ -27,6 +27,7 @@ public class IndexScene implements Scenery {
     private Scene scene;
     private String songPath = "resource/Music/I Feel It All Over.mp3";
     private Player player;
+    private  int indexI;
 
     private GridPane gridPane;
 
@@ -37,7 +38,7 @@ public class IndexScene implements Scenery {
         this.primaryStage = primaryStage;
 
         this.gridPane = new GridPane();
-        int indexI = 0;
+        this.indexI = 0;
         for (Scenery each : sceneries){
             this.gridPane.add(this.presetText("Go to scene:\t"), 0, indexI);
             this.gridPane.add(this.presetButton(each.getName(), each), 1, indexI);
@@ -49,7 +50,7 @@ public class IndexScene implements Scenery {
         youAreOK.setFont(Font.font("Candara", FontWeight.BOLD, 200));
         youAreOK.setFill(Color.color((double)90/256, (double)90/256, (double)255/256));
         youAreOK.setEffect(new DropShadow());
-        this.gridPane.add(youAreOK, 3, 4);
+        this.gridPane.add(youAreOK, 3, indexI + 1);
 
 
 
@@ -76,7 +77,7 @@ public class IndexScene implements Scenery {
 
     public void setNextScene(Scenery nextScene){
         this.nextScene = nextScene;
-        this.gridPane.add(presetButton("Check Code!", this.nextScene), 0, 4);
+        this.gridPane.add(presetButton("Check Code!", this.nextScene), 0, this.indexI + 1);
     }
 
     public String getTitle(){ return this.title; }

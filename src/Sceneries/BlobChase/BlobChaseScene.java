@@ -1,14 +1,13 @@
-package Sceneries.reversePacManTest;
+package Sceneries.BlobChase;
 
 import Sceneries.Player;
 import Sceneries.Scenery;
-import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -23,24 +22,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class NpcDemo implements Scenery {
+public class BlobChaseScene implements Scenery {
 
     private javafx.scene.canvas.Canvas canvas;
     private FXGraphics2D g2d;
     private Color color;
-    private int count;
+    private int countCollided;
+    private int countRunning;
     private boolean collided;
     private Scene scene;
     private Scenery nextScene;
     private String songPath = "resource/Music/BlindingLights.mp3";
     private boolean running = false;
 
-    public NpcDemo(Stage stage, Player player) throws Exception {
+    public BlobChaseScene(Stage stage, Player player) throws Exception {
         VBox mainPane = new VBox();
         canvas = new Canvas(1920, 880);
         this.g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
         this.color = Color.WHITE;
-        this.count = 0;
+        this.countCollided = 0;
         this.collided = false;
         new AnimationTimer() {
             long last = -1;
@@ -68,7 +68,6 @@ public class NpcDemo implements Scenery {
         HBox hBox = new HBox();
 
         Button buttonNext = new Button("Next Scene");
-        buttonNext.setStyle("-fx-font: 40 Verdana;");
         buttonNext.setOnAction(event -> {
             stage.setScene(this.nextScene.getScene());
             stage.setTitle(this.nextScene.getTitle());
@@ -78,14 +77,23 @@ public class NpcDemo implements Scenery {
             this.running = false;
         });
 
-        Button buttonStart = new Button("Start Game");
-        buttonStart.setStyle("-fx-font: 40 Verdana;");
+        Button buttonStart = new Button("Start new Game");
         buttonStart.setOnAction(event -> {
             this.init();
             this.running = true;
         });
 
-        hBox.getChildren().addAll(buttonNext, buttonStart);
+        Button buttonPause = new Button("Resume/Pause Game");
+        buttonPause.setOnAction(event -> {
+            this.running = !this.running;
+            if (this.running){
+                player.play();
+            } else {
+                player.pause();
+            }
+        });
+
+                hBox.getChildren().addAll(buttonNext, buttonStart, buttonPause);
 
         mainPane.getChildren().addAll(hBox, this.canvas);
         this.scene = new Scene(mainPane, 1920, 980);
@@ -97,6 +105,8 @@ public class NpcDemo implements Scenery {
 
     public void init() {
         this.blobs = new ArrayList<>();
+        this.countCollided = 0;
+        this.countRunning = 0;
 
         BufferedImage food = null;
         BufferedImage blobMan = null;
@@ -107,11 +117,6 @@ public class NpcDemo implements Scenery {
             e.printStackTrace();
         }
 
-//        Random rng = new Random();
-//        for(int i = 0; i < 50; i++) {
-//            this.blobs.add(new Food(new Point2D.Double((rng.nextInt(1920/65) * 65), (rng.nextInt(1080/65) * 65)), image));
-//        }
-
         for (int x = 0; x < 1920; x += 65 * 3){
             for (int y = 0; y > -200; y -= 65 * 2){
                 this.blobs.add(new Food(new Point2D.Double(x, y), food));
@@ -120,41 +125,84 @@ public class NpcDemo implements Scenery {
         this.blobs.add(new BlobMan(new Point2D.Double(860, 540), blobMan));
     }
 
-
-    public void draw(FXGraphics2D g2)
-    {
+    public void reset(FXGraphics2D g2){
         g2.setTransform(new AffineTransform());
         g2.setBackground(this.color);
         g2.clearRect(0,0,(int)canvas.getWidth(), (int)canvas.getHeight());
+    }
 
 
+    public void draw(FXGraphics2D g2)
+    {
         if (running){
+            this.reset(g2);
             for(Blob blob : blobs) {
                 blob.draw(this.g2d);
             }
         }
-
-
-
-
     }
 
     public void update(double frameTime) {
         if (running){
             if (this.collided) {
-                this.count++;
+                this.countCollided++;
             }
             for(Blob blob : blobs) {
                 if (blob.update(blobs)){
                     this.collided = true;
                     this.color = Color.BLACK;
                 } else {
-                    if (this.count > 100){
-                        this.count = 0;
+                    if (this.countCollided > 100){
+                        this.countCollided = 0;
                         this.color = Color.WHITE;
                     }
                 }
             }
+
+            ++this.countRunning;
+            switch (this.countRunning){
+                case 200:
+                    this.setBlobsSpeed(0);
+                    break;
+                case 250:
+                    this.setBlobsSpeed(3);
+                    break;
+                case 600:
+                    this.setBlobsSpeed(4);
+                    break;
+                case 1000:
+                    this.setBlobsSpeed(0);
+                    break;
+                case 1100:
+                    this.setBlobsSpeed(10);
+                    break;
+                case 1150:
+                    this.setBlobsSpeed(1);
+                    break;
+                case 1300:
+                    this.setBlobsSpeed(4);
+                    break;
+                case 2000:
+                    this.setBlobsSpeed(0);
+                    break;
+                case 2300:
+                    this.setBlobsSpeed(25);
+                    break;
+                case 2325:
+                    this.setBlobsSpeed(2);
+                    break;
+                case 2500:
+                    System.out.println("YOU WON");
+                    this.running = false;
+                    this.reset(this.g2d);
+            }
+        }
+
+    }
+
+    public void setBlobsSpeed(int speed){
+        for (Blob blob : this.blobs){
+            blob.setSpeed(speed);
         }
     }
 
