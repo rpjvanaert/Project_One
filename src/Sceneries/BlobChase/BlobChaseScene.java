@@ -3,11 +3,9 @@ package Sceneries.BlobChase;
 import Sceneries.Player;
 import Sceneries.Scenery;
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -34,6 +32,7 @@ public class BlobChaseScene implements Scenery {
     private Scenery nextScene;
     private String songPath = "resource/Music/BlindingLights.mp3";
     private boolean running = false;
+    private Shape textShape;
 
     public BlobChaseScene(Stage stage, Player player) throws Exception {
         VBox mainPane = new VBox();
@@ -97,6 +96,9 @@ public class BlobChaseScene implements Scenery {
 
         mainPane.getChildren().addAll(hBox, this.canvas);
         this.scene = new Scene(mainPane, 1920, 980);
+
+        Font font = new Font("Arial Rounded MT", Font.PLAIN, 200);
+        this.textShape = font.createGlyphVector(this.g2d.getFontRenderContext(), "7").getOutline();
     }
 
 
@@ -194,7 +196,7 @@ public class BlobChaseScene implements Scenery {
                 case 2500:
                     System.out.println("YOU WON");
                     this.running = false;
-                    this.reset(this.g2d);
+                    this.drawEnd();
             }
         }
 
@@ -204,6 +206,24 @@ public class BlobChaseScene implements Scenery {
         for (Blob blob : this.blobs){
             blob.setSpeed(speed);
         }
+    }
+
+    public void drawEnd(){
+        this.reset(this.g2d);
+        BufferedImage weeknd = null;
+        try {
+            weeknd = ImageIO.read(new File("resource/TheWeeknd.jpeg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        double scale = this.canvas.getWidth()/(double)weeknd.getWidth();
+        this.g2d.drawImage(weeknd, AffineTransform.getScaleInstance(scale, scale), null);
+
+        Shape tfShape = AffineTransform.getTranslateInstance(this.canvas.getWidth()/2, this.canvas.getHeight()/2).createTransformedShape(this.textShape);
+        this.g2d.setPaint(Color.YELLOW);
+        this.g2d.fill(tfShape);
+        this.g2d.setPaint(Color.BLACK);
+        this.g2d.draw(tfShape);
     }
 
     public Scene getScene(){ return this.scene; }

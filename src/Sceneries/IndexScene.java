@@ -46,11 +46,18 @@ public class IndexScene implements Scenery {
         }
         this.gridPane.setBackground(new Background(new BackgroundFill(Color.color((double)222/256, (double)174/256, (double)84/256), CornerRadii.EMPTY, Insets.EMPTY)));
 
-        Text youAreOK = new Text("You Are OK");
-        youAreOK.setFont(Font.font("Candara", FontWeight.BOLD, 200));
-        youAreOK.setFill(Color.color((double)90/256, (double)90/256, (double)255/256));
-        youAreOK.setEffect(new DropShadow());
-        this.gridPane.add(youAreOK, 3, indexI + 1);
+        Text youAre = new Text("You Are");
+        youAre.setFont(Font.font("Franklin Gothic", FontWeight.BOLD, 200));
+        youAre.setFill(Color.color((double)0/256, (double)102/256, (double)255/256));
+        youAre.setEffect(new DropShadow());
+        this.gridPane.add(youAre, 3, indexI + 1);
+
+        Text OK = new Text("OK");
+        OK.setFont(Font.font("Franklin Gothic", FontWeight.THIN, 300));
+        OK.setFill(Color.color((double)0/256, (double)102/256, (double)255/256));
+//        youAre.setEffect(new DropShadow());
+        this.gridPane.add(OK, 4, indexI + 1);
+
 
 
 
@@ -71,7 +78,7 @@ public class IndexScene implements Scenery {
             player.stop();
             this.player.setSong(setScene.getSongPath());
         });
-        buttonReturn.setStyle("-fx-font: 40 Verdana; -fx-base: #3399ff");
+        buttonReturn.setStyle("-fx-font: 30 Verdana; -fx-base: #3399ff");
         return buttonReturn;
     }
 
