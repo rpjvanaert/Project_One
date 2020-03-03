@@ -13,4 +13,5 @@ public interface Blob {
     double distance(Blob other, Point2D newPosition);
     Point2D getPosition();
     void setSpeed(int speed);
+    int getRadius();
 }

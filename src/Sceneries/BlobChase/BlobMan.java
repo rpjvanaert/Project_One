@@ -52,7 +52,7 @@ public class BlobMan implements  Blob{
         this.collided = false;
 
         for(Blob other : food) {
-            if(other != this && this.distance(other, newPosition) < 64) {
+            if(other != this && this.distance(other, newPosition) < other.getRadius() + 32) {
                 collided = true;
             }
         }
@@ -75,7 +75,7 @@ public class BlobMan implements  Blob{
     public AffineTransform getTransform() {
         AffineTransform tx = new AffineTransform();
         tx.translate(position.getX() - this.sprite.getWidth()/2, position.getY() - this.sprite.getHeight()/2);
-        tx.rotate(this.angle, this.sprite.getWidth()/2, this.sprite.getHeight()/2);
+        tx.rotate(this.angle + 0.5 * Math.PI, this.sprite.getWidth()/2, this.sprite.getHeight()/2);
         return tx;
     }
 
@@ -92,5 +92,9 @@ public class BlobMan implements  Blob{
     }
 
     public void setSpeed(int speed){
+    }
+
+    public int getRadius(){
+        return 32;
     }
 }

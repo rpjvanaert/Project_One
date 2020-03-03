@@ -11,6 +11,7 @@ public class Player {
     private ArrayList<Media> mediaList;
     private int indexPlaying;
     private boolean playing;
+    private Media songPlaying;
 
     public Player(){
         this.mediaList = new ArrayList<>();
@@ -22,6 +23,7 @@ public class Player {
             }
         }
         this.playing = false;
+
     }
 
     public void play(){
@@ -66,8 +68,12 @@ public class Player {
         if (playing){
             this.mediaPlayer.stop();
         }
+        this.songPlaying = songMedia;
 
         this.mediaPlayer = new MediaPlayer(songMedia);
         this.mediaPlayer.play();
+        this.mediaPlayer.setOnEndOfMedia(()->{
+            this.mediaPlayer = new MediaPlayer(this.songPlaying);
+        });
     }
 }

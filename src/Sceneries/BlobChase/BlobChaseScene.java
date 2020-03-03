@@ -54,7 +54,6 @@ public class BlobChaseScene implements Scenery {
         }.start();
 
         draw(g2d);
-
         canvas.setOnMouseMoved(e ->
         {
             if (running){
@@ -153,6 +152,8 @@ public class BlobChaseScene implements Scenery {
                 if (blob.update(blobs)){
                     this.collided = true;
                     this.color = Color.BLACK;
+                    this.gameOver();
+                    this.running = false;
                 } else {
                     if (this.countCollided > 100){
                         this.countCollided = 0;
@@ -164,34 +165,28 @@ public class BlobChaseScene implements Scenery {
             ++this.countRunning;
             switch (this.countRunning){
                 case 200:
+                case 1000:
+                case 2000:
                     this.setBlobsSpeed(0);
                     break;
                 case 250:
-                    this.setBlobsSpeed(3);
-                    break;
-                case 600:
                     this.setBlobsSpeed(4);
                     break;
-                case 1000:
-                    this.setBlobsSpeed(0);
+                case 600:
+                case 1300:
+                    this.setBlobsSpeed(5);
                     break;
                 case 1100:
-                    this.setBlobsSpeed(10);
+                    this.setBlobsSpeed(14);
                     break;
                 case 1150:
                     this.setBlobsSpeed(1);
                     break;
-                case 1300:
-                    this.setBlobsSpeed(4);
-                    break;
-                case 2000:
-                    this.setBlobsSpeed(0);
-                    break;
                 case 2300:
-                    this.setBlobsSpeed(25);
+                    this.setBlobsSpeed(27);
                     break;
-                case 2325:
-                    this.setBlobsSpeed(2);
+                case 2335:
+                    this.setBlobsSpeed(3);
                     break;
                 case 2500:
                     System.out.println("YOU WON");
@@ -224,6 +219,20 @@ public class BlobChaseScene implements Scenery {
         this.g2d.fill(tfShape);
         this.g2d.setPaint(Color.BLACK);
         this.g2d.draw(tfShape);
+    }
+
+    public void gameOver(){
+        this.init();
+        this.color = Color.RED;
+        this.reset(this.g2d);
+        Font font = new Font("Arial Rounded MT", Font.PLAIN, 200);
+        Shape textShape1 = font.createGlyphVector(this.g2d.getFontRenderContext(), "Game Over!").getOutline();
+        Shape tfShape1 = AffineTransform.getTranslateInstance(this.canvas.getWidth()/2 - 500, this.canvas.getHeight()/2).createTransformedShape(textShape1);
+        this.g2d.setPaint(Color.WHITE);
+        this.g2d.fill(tfShape1);
+        this.g2d.setPaint(Color.BLACK);
+        this.g2d.draw(tfShape1);
+        this.color = Color.WHITE;
     }
 
     public Scene getScene(){ return this.scene; }

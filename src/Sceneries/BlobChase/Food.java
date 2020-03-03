@@ -51,7 +51,7 @@ public class Food implements  Blob{
         boolean collided = false;
 
         for(Blob other : food) {
-            if(other != this && this.distance(other, newPosition) < 64) {
+            if(other != this && this.distance(other, newPosition) < other.getRadius() + 16) {
                 collided = true;
             }
         }
@@ -91,5 +91,9 @@ public class Food implements  Blob{
 
     public void setSpeed(int speed){
         this.speed = speed;
+    }
+
+    public int getRadius(){
+        return 16;
     }
 }
