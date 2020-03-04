@@ -1,5 +1,6 @@
 package Sceneries.Clicker;
 
+import Sceneries.Player;
 import Sceneries.Scenery;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,10 +10,15 @@ import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
 
 public class ClickerScene implements Scenery {
     private Scene scene;
     private Scenery nextScene;
+    private String title;
+    private String songPath = "resource/Music/Soundtrack/Jason Mraz - I'm Yours (HQ).mp3";
 
     private VBox vBox;
 
@@ -26,22 +32,33 @@ public class ClickerScene implements Scenery {
 
     private ClickSquare clickSquare;
 
-    private Image background;
     private pictureRotator pictureRotator;
 
-    public ClickerScene(Stage primaryStage){
+    private int count;
+    private int max;
+
+    public ClickerScene(Stage primaryStage, Player player){
         this.canvasWidth = 1920;
         this.canvasHeight = 880;
         this.canvas = new Canvas(this.canvasWidth, this.canvasHeight);
+        this.title = "Clicker!";
+
+        this.count = 0;
+        this.max = 14;
 
         this.clickSquare = new ClickSquare(canvasWidth, canvasHeight);
 
         this.pictureRotator = new pictureRotator();
-        this.background = this.pictureRotator.getImage();
 
         this.canvas.setOnMouseClicked(event -> {
             if (this.clickSquare.check((int)event.getX(), (int)event.getY())){
-
+                this.pictureRotator.roll();
+                if (++this.count == this.max){
+                    this.count = 0;
+                    this.title = "An ugly amount of times you have to click the red square, right? How many times? Oh hi this title can change any time btw!";
+                    primaryStage.setScene(this.nextScene.getScene());
+                    primaryStage.setTitle(this.nextScene.getTitle());
+                }
             }
             this.draw();
         });
@@ -57,7 +74,8 @@ public class ClickerScene implements Scenery {
         });
 
         this.vBox = new VBox();
-        this.vBox.getChildren().addAll(this.buttonNext, this.canvas);
+        this.vBox.getChildren().add(this.buttonNext);
+        this.vBox.getChildren().add(this.canvas);
 
         this.scene = new Scene(this.vBox);
     }
@@ -65,7 +83,15 @@ public class ClickerScene implements Scenery {
     public void draw(){
         this.g2d.setBackground(Color.BLACK);
         this.g2d.clearRect(0,0, this.canvasWidth, this.canvasHeight);
-        this.g2d.drawImage(this.background, null, null);
+
+        g2d.setPaint(new TexturePaint(this.pictureRotator.getTexture(), new Rectangle2D.Double(0,0, this.pictureRotator.getTextureWidth(), this.pictureRotator.getTextureHeight())));
+        g2d.fill(new Rectangle2D.Double(0,0, this.canvasWidth, this.canvasHeight));
+
+        AffineTransform aT = new AffineTransform();
+        aT.scale(this.pictureRotator.getScale(), this.pictureRotator.getScale());
+        aT.translate(this.canvasWidth/2 - (this.pictureRotator.getWidth() * this.pictureRotator.getScale()/2), 0);
+        this.g2d.drawImage(this.pictureRotator.getImage(), aT, null);
+
         this.clickSquare.draw(g2d);
     }
 
@@ -73,5 +99,9 @@ public class ClickerScene implements Scenery {
 
     public void setNextScene(Scenery nextScene){ this.nextScene = nextScene; }
 
-    public String getTitle(){ return "Clicker!"; }
+    public String getTitle(){ return this.title; }
+
+    public String getName(){ return "Clicker"; }
+
+    public String getSongPath(){ return this.songPath; }
 }

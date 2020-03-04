@@ -4,10 +4,15 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 
 public class GlassMain extends Application {
@@ -47,6 +52,16 @@ public class GlassMain extends Application {
         g2d.setBackground(Color.white);
         g2d.clearRect(0,0,1920,1080);
         this.mGlass.draw(g2d);
-        g2d.clip(this.mGlass.getShapeGlass());
+        g2d.setClip(this.mGlass.getShapeGlass());
+        //draw stuff
+        BufferedImage img = null;
+        File imgFile = new File("resource/han_solo.jpeg");
+        try {
+            img = ImageIO.read(imgFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        g2d.drawImage(img,  null, null);
+        g2d.setClip(null);
     }
 }

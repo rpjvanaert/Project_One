@@ -1,11 +1,15 @@
 package Sceneries.ScreenSaver;
 
+import Sceneries.Player;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,6 +21,7 @@ import java.awt.*;
 
 public class ScreenSaverScene implements Scenery{
     private Scenery nextScene;
+    private String songPath = "resource/Music/Soundtrack/Star Wars Main Theme (Full).mp3";
 
     private Scene scene;
     private HBox hBox;
@@ -46,7 +51,12 @@ public class ScreenSaverScene implements Scenery{
 
     private EasterEggMessage egg;
 
-    public ScreenSaverScene(Stage primaryStage){
+    private Label errorText;
+    private Stage popUpWindow;
+    private Button buttonClose;
+
+    public ScreenSaverScene(Stage primaryStage, Player player){
+
         this.saverPoints = 6;
         this.stepSize = 10;
         this.fadeLines = 30;
@@ -55,6 +65,26 @@ public class ScreenSaverScene implements Scenery{
 
         this.widthCanvas = 1920;
         this.heightCanvas = 880;
+
+        this.errorText = new Label(
+                "The only non-number character\n" +
+                "you can use is '-'. \n" +
+                "When we made it official.\nOh you light up my sky!");
+        this.errorText.setStyle("-fx-font: 30 Leelawadee; -fx-border-color: transparent; -fx-border-width: 7; -fx-text-fill: white;");
+
+        this.buttonClose = new Button("You are OK");
+        this.buttonClose.setStyle("-fx-font: 100 Leelawadee; -fx-base: orange");
+        this.buttonClose.setOnAction(event -> {
+            this.popUpWindow.close();
+        });
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(this.errorText);
+        borderPane.setBottom(this.buttonClose);
+        this.popUpWindow = new Stage();
+        this.popUpWindow.setHeight(480);
+        borderPane.setStyle("-fx-background-color: #66ccff;");
+        Scene scene = new Scene(borderPane);
+        this.popUpWindow.setScene(scene);
 
 
         this.lineCollection = new LineCollection(widthCanvas, heightCanvas, saverPoints, stepSize, fadeLines, fade, hueCycleSpeed);
@@ -70,10 +100,12 @@ public class ScreenSaverScene implements Scenery{
         this.buttonNext.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());
+            player.stop();
+            player.setSong(this.nextScene.getSongPath());
         });
 
 
-        this.buttonShowSaver = new Button("Push Screen Saver Settings");
+        this.buttonShowSaver = new Button("\t\tSubmit\t\t\t");
         this.buttonShowSaver.setOnAction(event -> {
             this.checkTextFields();
         });
@@ -87,11 +119,11 @@ public class ScreenSaverScene implements Scenery{
         this.hBox = new HBox();
         this.hBox.getChildren().addAll(
                 this.buttonShowSaver,
-                getPresetLabel("Amount of points"),             this.tfSaverPoints,
-                getPresetLabel("Step size"),                    this.tfStepSize,
-                getPresetLabel("Amount of faded lines"),        this.tfFadeLines,
-                getPresetLabel("Fade float"),                   this.tfFade,
-                getPresetLabel("Cycle speed through colors"),   this.tfHueCycleSpeed);
+                getPresetLabel("\tAmount of points: "),             this.tfSaverPoints,
+                getPresetLabel("\tStep size: "),                    this.tfStepSize,
+                getPresetLabel("\tAmount of faded lines: "),        this.tfFadeLines,
+                getPresetLabel("\tFade float: "),                   this.tfFade,
+                getPresetLabel("\tCycle speed through colors: "),   this.tfHueCycleSpeed);
 
         this.vBox = new VBox();
         this.vBox.getChildren().addAll(this.buttonNext, this.hBox, this.canvas);
@@ -144,7 +176,9 @@ public class ScreenSaverScene implements Scenery{
             this.draw();
         } catch (Exception e){
             e.printStackTrace();
+            this.popUpWindow.showAndWait();
             //@TODO Add error pop up
+
         }
 
         return true;
@@ -157,4 +191,8 @@ public class ScreenSaverScene implements Scenery{
     }
 
     public String getTitle(){ return "Screen Saver Exercise"; }
+
+    public String getName() { return "Screen Saver"; }
+
+    public String getSongPath(){ return this.songPath; }
 }
