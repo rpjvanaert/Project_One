@@ -10,7 +10,6 @@ public class ToeLogic {
     private int width;
     private int height;
 
-    //@TODO Add logic that check if it's a tie
     //@TODO fix diagonal checkForWin
 
     public ToeLogic(int width, int height){
@@ -33,19 +32,18 @@ public class ToeLogic {
         return false;
     }
 
-    public void botStep(){
-        boolean foundPlace = false;
-        Random r = new Random();
-        int rW;
-        int rH;
-        while(!foundPlace){
-            rW = r.nextInt(this.width);
-            rH = r.nextInt(this.height);
-            if (this.toes[rW][rH] == 0){
-                foundPlace = true;
-                this.toes[rW][rH] = 2;
+    public boolean isTie(){
+        boolean isTie = true;
+
+        for (int x = 0; x < width; ++x){
+            for (int y = 0; y < height; ++y){
+                if (this.toes[x][y] == 0){
+                    isTie = false;
+                }
             }
         }
+
+        return isTie;
     }
 
     public int checkForWin(){

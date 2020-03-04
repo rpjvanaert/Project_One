@@ -17,6 +17,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+//@TODO Random pictures instead of X and O signs
+//@TODO Tie screen
 
 public class TicTacStubbedPinkyToe extends Application {
     private Canvas canvas;
@@ -33,9 +35,14 @@ public class TicTacStubbedPinkyToe extends Application {
 
     private Shape shapeX;
     private Shape shapeO;
+    private Shape shapeW;
+    private Shape shapeT;
+    private boolean won = false;
+    private boolean tie = false;
 
     private ToeLogic toeLogic;
     private int player;
+    private int winner = 0;
 
 
     @Override
@@ -48,6 +55,8 @@ public class TicTacStubbedPinkyToe extends Application {
         Font font = new Font("Verdana", Font.PLAIN, 110);
         this.shapeX = font.createGlyphVector(this.g2d.getFontRenderContext(), "X").getOutline();
         this.shapeO = font.createGlyphVector(this.g2d.getFontRenderContext(), "O").getOutline();
+        this.shapeW = font.createGlyphVector(this.g2d.getFontRenderContext(), "YOU WON").getOutline();
+        this.shapeT = font.createGlyphVector(this.g2d.getFontRenderContext(), "It's a tie...").getOutline();
 
         File milaFile = new File("resource/mila.jpg");
         this.milaIMG = ImageIO.read(milaFile);
@@ -59,6 +68,11 @@ public class TicTacStubbedPinkyToe extends Application {
         this.buttonNewGame = new Button("Start new Game");
         this.buttonNewGame.setOnAction(event -> {
             this.toeLogic= new ToeLogic(amountTiles, amountTiles);
+            this.currentPlayerIMG = this.milaIMG;
+            this.player = 1;
+            this.won = false;
+            this.tie = false;
+            this.winner = 0;
         });
 
         this.hBox.getChildren().addAll(this.buttonNewGame);
@@ -71,7 +85,7 @@ public class TicTacStubbedPinkyToe extends Application {
 
         this.canvas.setOnMouseClicked(event -> {
             Point2D p2d = this.getPlace((int)event.getX(), (int)event.getY());
-            if (p2d != null){
+            if (p2d != null && !this.won){
                 if (this.toeLogic.placePos(p2d, this.player)){
                     if (this.player == 1){
                         this.player = 2;
@@ -98,16 +112,21 @@ public class TicTacStubbedPinkyToe extends Application {
         this.g2d.setPaint(Color.WHITE);
         this.drawGrid();
         this.drawToeLogic();
+        if (this.won){
+            this.drawWon();
+        }
     }
 
     public void update(){
-        if (this.toeLogic.getToes() != null) {
+        if (this.toeLogic.getToes() != null && !this.won) {
             int winValue = this.toeLogic.checkForWin();
             if (winValue != 0) {
                 System.out.println(winValue + " WON GAME");
-                this.toeLogic = new ToeLogic(amountTiles, amountTiles);
-                this.currentPlayerIMG = this.milaIMG;
-                this.player = 1;
+                this.won = true;
+                this.winner = winValue;
+            } else if (this.toeLogic.isTie()){
+                System.out.println("TIE");
+                this.tie = true;
             }
         }
     }
@@ -121,7 +140,15 @@ public class TicTacStubbedPinkyToe extends Application {
             this.g2d.drawLine(0, y, height, y);
         }
 
-        this.showPlayer(this.currentPlayerIMG);
+        if (this.winner == 1){
+            this.showPlayer(this.milaIMG);
+        } else if (this.winner == 2){
+            this.showPlayer(this.ralfIMG);
+        } else {
+            this.showPlayer(this.currentPlayerIMG);
+        }
+
+
     }
 
     public void drawToeLogic(){
@@ -139,6 +166,12 @@ public class TicTacStubbedPinkyToe extends Application {
                 }
             }
         }
+    }
+
+    public void drawWon(){
+        this.g2d.setPaint(Color.GREEN);
+        this.g2d.fill(AffineTransform.getTranslateInstance(height/2, height/2).createTransformedShape(this.shapeW));
+        this.g2d.setPaint(Color.WHITE);
     }
 
     public void showPlayer(BufferedImage img){
