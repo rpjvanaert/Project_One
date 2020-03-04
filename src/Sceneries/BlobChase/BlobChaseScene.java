@@ -56,11 +56,16 @@ public class BlobChaseScene implements Scenery {
         draw(g2d);
         canvas.setOnMouseMoved(e ->
         {
-            if (running){
-                for(Blob blob : blobs) {
-                    blob.setTarget(new Point2D.Double(e.getX(), e.getY()));
-                }
+//            if (running){
+//                for(Blob blob : blobs) {
+//                    blob.setTarget(new Point2D.Double(e.getX(), e.getY()));
+//                }
+//            }
+            Point2D manP2D = this.blobs.get(this.blobs.size() - 1).getPosition();
+            for (int i = 0; i < blobs.size() - 1; ++i){
+                blobs.get(i).setTarget(manP2D);
             }
+            this.blobs.get(this.blobs.size() - 1).setTarget(new Point2D.Double(e.getX(), e.getY()));
         });
 
         HBox hBox = new HBox();
@@ -189,7 +194,6 @@ public class BlobChaseScene implements Scenery {
                     this.setBlobsSpeed(3);
                     break;
                 case 2500:
-                    System.out.println("YOU WON");
                     this.running = false;
                     this.drawEnd();
             }

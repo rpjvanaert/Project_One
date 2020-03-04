@@ -72,7 +72,6 @@ public class CodeCheckerScene implements Scenery {
 
             }
             if (correct){
-                System.out.println("CORRECT!!!");
                 primaryStage.setScene(this.endScene.getScene());
                 primaryStage.setTitle(this.endScene.getTitle());
                 player.stop();
