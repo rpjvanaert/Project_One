@@ -72,9 +72,6 @@ public class Player {
 
         this.mediaPlayer = new MediaPlayer(songMedia);
         this.mediaPlayer.play();
-        this.mediaPlayer.setOnEndOfMedia(()->{
-            this.mediaPlayer = new MediaPlayer(this.songPlaying);
-            this.mediaPlayer.play();
-        });
+        this.mediaPlayer.setOnEndOfMedia(()-> this.setSong(pathSong));
     }
 }
