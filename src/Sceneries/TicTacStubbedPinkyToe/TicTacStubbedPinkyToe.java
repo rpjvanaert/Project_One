@@ -1,4 +1,4 @@
-package Sceneries.MegaTicTacStubToe;
+package Sceneries.TicTacStubbedPinkyToe;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -10,12 +10,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 
-public class MegaTicTacStubToe extends Application {
+public class TicTacStubbedPinkyToe extends Application {
     private Canvas canvas;
     private int width = 1920; private int height = 880;
     private int amountTiles = 11;
@@ -24,10 +27,15 @@ public class MegaTicTacStubToe extends Application {
     private HBox hBox;
     private Button buttonNewGame;
 
+    private BufferedImage milaIMG;
+    private BufferedImage ralfIMG;
+    private BufferedImage currentPlayerIMG;
+
     private Shape shapeX;
     private Shape shapeO;
 
     private ToeLogic toeLogic;
+    private int player;
 
 
     @Override
@@ -41,6 +49,13 @@ public class MegaTicTacStubToe extends Application {
         this.shapeX = font.createGlyphVector(this.g2d.getFontRenderContext(), "X").getOutline();
         this.shapeO = font.createGlyphVector(this.g2d.getFontRenderContext(), "O").getOutline();
 
+        File milaFile = new File("resource/mila.jpg");
+        this.milaIMG = ImageIO.read(milaFile);
+        File ralfFile = new File("resource/tomConfused.jpeg");
+        this.ralfIMG = ImageIO.read(ralfFile);
+        currentPlayerIMG = milaIMG;
+
+        this.player = 1;
         this.buttonNewGame = new Button("Start new Game");
         this.buttonNewGame.setOnAction(event -> {
             this.toeLogic= new ToeLogic(amountTiles, amountTiles);
@@ -57,8 +72,14 @@ public class MegaTicTacStubToe extends Application {
         this.canvas.setOnMouseClicked(event -> {
             Point2D p2d = this.getPlace((int)event.getX(), (int)event.getY());
             if (p2d != null){
-                if (this.toeLogic.placePos(p2d)){
-                    this.toeLogic.botStep();
+                if (this.toeLogic.placePos(p2d, this.player)){
+                    if (this.player == 1){
+                        this.player = 2;
+                        currentPlayerIMG = this.ralfIMG;
+                    } else {
+                        this.player = 1;
+                        currentPlayerIMG = this.milaIMG;
+                    }
                 }
             }
         });
@@ -85,6 +106,8 @@ public class MegaTicTacStubToe extends Application {
             if (winValue != 0) {
                 System.out.println(winValue + " WON GAME");
                 this.toeLogic = new ToeLogic(amountTiles, amountTiles);
+                this.currentPlayerIMG = this.milaIMG;
+                this.player = 1;
             }
         }
     }
@@ -97,6 +120,8 @@ public class MegaTicTacStubToe extends Application {
         for (int y = 0; y <= height; y += height/amountTiles){
             this.g2d.drawLine(0, y, height, y);
         }
+
+        this.showPlayer(this.currentPlayerIMG);
     }
 
     public void drawToeLogic(){
@@ -114,6 +139,21 @@ public class MegaTicTacStubToe extends Application {
                 }
             }
         }
+    }
+
+    public void showPlayer(BufferedImage img){
+        AffineTransform aT = new AffineTransform();
+        double scaleWidth = (width - height)/ (double)img.getWidth();
+        double scaleHeight = (height) / (double)img.getHeight();
+        double scale;
+        if (scaleHeight > scaleWidth){
+            scale = scaleWidth;
+        } else {
+            scale = scaleHeight;
+        }
+        aT.scale(scale, scale);
+        aT.translate(height/scale, 0);
+        this.g2d.drawImage(img, aT, null);
     }
 
     public Point2D getPlace(int x, int y){

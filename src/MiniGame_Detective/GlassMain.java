@@ -38,6 +38,11 @@ public class GlassMain extends Application {
             this.mGlass.setPos((int) event.getX() - this.mGlass.getWidth()/2, (int) event.getY() - this.mGlass.getWidth()/2);
             draw(g2d);
         });
+
+        canvas.setOnMouseMoved(event -> {
+            this.mGlass.setPos((int) event.getX() - this.mGlass.getWidth()/2, (int) event.getY() - this.mGlass.getWidth()/2);
+            draw(g2d);
+        });
         this.mGlass = new MagnifyingGlass();
 
         draw(g2d);
