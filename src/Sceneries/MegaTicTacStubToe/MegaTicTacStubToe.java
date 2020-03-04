@@ -106,8 +106,8 @@ public class MegaTicTacStubToe extends Application {
             for (int y = 0; y < amountTiles; ++y){
                 int value = values[x][y];
                 if (value == 1){
-                    int px = x * height;
-                    int py = (y + 1) * height;
+                    int px = x * height/amountTiles;
+                    int py = (y + 1) * height/amountTiles;
                     this.g2d.fill(AffineTransform.getTranslateInstance(px, py).createTransformedShape(this.shapeX));
                 } else if (value == 2){
                     this.g2d.fill(AffineTransform.getTranslateInstance(x * height/amountTiles, (y + 1) * height/amountTiles).createTransformedShape(this.shapeO));
