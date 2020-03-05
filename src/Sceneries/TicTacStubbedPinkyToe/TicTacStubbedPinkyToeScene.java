@@ -172,11 +172,9 @@ public class TicTacStubbedPinkyToeScene implements Scenery {
         if (this.toeLogic.getToes() != null && !this.won) {
             int winValue = this.toeLogic.checkForWin();
             if (winValue != 0) {
-                System.out.println(winValue + " WON GAME");
                 this.won = true;
                 this.winner = winValue;
             } else if (this.toeLogic.isTie()){
-                System.out.println("TIE");
                 this.tie = true;
             }
         }
@@ -203,7 +201,6 @@ public class TicTacStubbedPinkyToeScene implements Scenery {
     }
 
     public void drawToeLogic(){
-//        System.out.println(height/amountTiles);
         int[][] values = this.toeLogic.getToes();
         for (int x = 0; x < amountTiles; ++x){
             for (int y = 0; y < amountTiles; ++y){
@@ -236,7 +233,7 @@ public class TicTacStubbedPinkyToeScene implements Scenery {
 
     private void drawChosenIMG(int x, int y, BufferedImage chosen) {
         AffineTransform at = new AffineTransform();
-        double scale = getScale(chosen, height/amountTiles, height/amountTiles);
+        double scale = getScale(chosen, height/amountTiles - 1, height/amountTiles - 1);
         at.scale(scale, scale);
         at.translate((x * height/amountTiles) / scale, ((y) * height/amountTiles) / scale);
         this.g2d.drawImage(chosen, at, null);

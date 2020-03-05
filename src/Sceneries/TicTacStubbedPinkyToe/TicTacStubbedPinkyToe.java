@@ -154,11 +154,9 @@ public class TicTacStubbedPinkyToe extends Application {
         if (this.toeLogic.getToes() != null && !this.won) {
             int winValue = this.toeLogic.checkForWin();
             if (winValue != 0) {
-                System.out.println(winValue + " WON GAME");
                 this.won = true;
                 this.winner = winValue;
             } else if (this.toeLogic.isTie()){
-                System.out.println("TIE");
                 this.tie = true;
             }
         }
@@ -185,7 +183,6 @@ public class TicTacStubbedPinkyToe extends Application {
     }
 
     public void drawToeLogic(){
-//        System.out.println(height/amountTiles);
         int[][] values = this.toeLogic.getToes();
         for (int x = 0; x < amountTiles; ++x){
             for (int y = 0; y < amountTiles; ++y){
