@@ -28,7 +28,7 @@ public class ExperimentalScene implements Scenery {
     private String title;
     private Scene scene;
     private int timesVisited;
-    private String songPath = "resource/Music/Soundtrack/Katrina & The Waves - Walking On Sunshine (Official Video).mp3";
+    private String songPath = "resource/Music/LearnToLetGo.mp3";
 
     private VBox vBox;
     private Button buttonNext;
@@ -45,7 +45,7 @@ public class ExperimentalScene implements Scenery {
 
 
     public ExperimentalScene(Stage primaryStage, Player player){
-        this.title = "EXPERIMENTAL";
+        this.title = "Yet to change";
         this.canvas = new Canvas(1920, 880);
         this.g2d = new FXGraphics2D(this.canvas.getGraphicsContext2D());
         this.mousePos = new Point2D.Double(canvas.getWidth()/2 - 25, canvas.getHeight()/2 - 25);
@@ -98,11 +98,14 @@ public class ExperimentalScene implements Scenery {
         this.shapes = new ArrayList<>();
         this.shapes.add(new Ellipse2D.Double(0, 0, 40,300));
         this.shapes.add(new Rectangle2D.Double(0, 0, 300, 10));
-        Font font1 = new Font("Brush Script MT", Font.PLAIN, 60);
+        Font font1 = new Font("Gabriola", Font.PLAIN, 60);
         Font font2 = new Font("Century Gothic", Font.PLAIN, 60);
+        Font font3 = new Font("Century Gothic", Font.PLAIN, 30);
         this.shapes.add(font1.createGlyphVector(this.g2d.getFontRenderContext(), "Mila").getOutline());
         this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Ralf").getOutline());
-        this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Henk").getOutline());
+        this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Pila").getOutline());
+        this.shapes.add(font3.createGlyphVector(this.g2d.getFontRenderContext(), "Logophilist").getOutline());
+
 
         this.rng = new Random();
         this.indexArt = rng.nextInt(this.art.size());
@@ -140,7 +143,7 @@ public class ExperimentalScene implements Scenery {
             return 150;
         } else if (index == 1){
             return 5;
-        } else if(index == 2 || index == 3 || index == 4){
+        } else if(index == 2 || index == 3 || index == 4 || index == 5 || index == 6){
             return 0;
         }
         return 0;
@@ -151,7 +154,9 @@ public class ExperimentalScene implements Scenery {
             return 20;
         } else if(index == 1){
             return 150;
-        } else if(index == 2 || index == 3 || index == 4){
+        } else if(index == 2 || index == 3 || index == 4 || index == 5){
+            return 70;
+        } else if (index == 6){
             return 70;
         }
         return 0;
@@ -163,7 +168,7 @@ public class ExperimentalScene implements Scenery {
 
     public Scene getScene(){ return this.scene; }
 
-    public String getName(){ return "Animation"; }
+    public String getName(){ return "Art takes time"; }
 
     public String getSongPath(){ return this.songPath; }
 }
