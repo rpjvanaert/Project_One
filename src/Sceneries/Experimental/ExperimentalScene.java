@@ -2,6 +2,7 @@ package Sceneries.Experimental;
 
 import Sceneries.Player;
 import Sceneries.Scenery;
+import Sceneries.TicTacStubbedPinkyToe.PictureHandler;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,9 +14,14 @@ import org.jfree.fx.FXGraphics2D;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ExperimentalScene implements Scenery {
     private Scenery nextScene;
@@ -30,35 +36,35 @@ public class ExperimentalScene implements Scenery {
     private Canvas canvas;
     private FXGraphics2D g2d;
 
-    private BufferedImage[] walkCycle;
-    private int indexAnimation;
-    private int fps;
-    private float animationSpeed;
-    private long beginTime;
+    private ArrayList<BufferedImage> art;
+    private ArrayList<Shape> shapes;
+    private Random rng;
+    private int indexArt;
+    private int indexShape;
+    private Point2D mousePos;
+
 
     public ExperimentalScene(Stage primaryStage, Player player){
         this.title = "EXPERIMENTAL";
-        this.init();
         this.canvas = new Canvas(1920, 880);
         this.g2d = new FXGraphics2D(this.canvas.getGraphicsContext2D());
+        this.mousePos = new Point2D.Double(canvas.getWidth()/2 - 25, canvas.getHeight()/2 - 25);
+        this.init();
         this.draw();
         this.timesVisited = 1;
 
-        this.fps = 30;
-        this.animationSpeed = 1.0f/10.0f;
-        this.beginTime = System.currentTimeMillis();
 
-        new AnimationTimer() {
-            long last = -1;
-            @Override
-            public void handle(long now) {
-                if(last == -1)
-                    last = now;
-                update((now - last) / 1000000000.0);
-                last = now;
-                draw();
-            }
-        }.start();
+        canvas.setOnMouseClicked(event -> {
+            this.indexShape = this.rng.nextInt(this.shapes.size());
+            this.indexArt = this.rng.nextInt(this.art.size());
+            this.draw();
+            System.out.println(this.indexShape);
+        });
+
+        canvas.setOnMouseMoved(event -> {
+            this.mousePos = new Point2D.Double(event.getX(), event.getY());
+            this.draw();
+        });
 
         this.buttonNext = new Button("Next Scene");
         this.buttonNext.setOnAction(event -> {
@@ -79,41 +85,76 @@ public class ExperimentalScene implements Scenery {
     }
 
     public void init(){
-        try {
-            BufferedImage image = ImageIO.read(new File("resource/sprite.png"));
-            this.walkCycle = new BufferedImage[65];
-            for (int y = 4; y < 5; ++y){
-                for (int x = 0; x < 8; ++x){
-                    this.walkCycle[(x)] = image.getSubimage(x * 64, y * 64, 64, 64);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void update(double deltaTime){
-        long timeElapsed = System.currentTimeMillis() - this.beginTime;
-        if (timeElapsed >= 1.0f /this.animationSpeed * 10.0f){
-            this.beginTime = System.currentTimeMillis();
-            ++this.indexAnimation;
-        }
-
-        double frameTime = 1 / this.fps;
-        if (frameTime > deltaTime){
+        this.art = new ArrayList<>();
+        File folderArt = new File("resource/EXPERIMENTAL");
+        for (File each : folderArt.listFiles()){
             try {
-                Thread.sleep((long) (frameTime - deltaTime));
-            } catch (InterruptedException e) {
+                this.art.add(ImageIO.read(each));
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
+        this.shapes = new ArrayList<>();
+        this.shapes.add(new Ellipse2D.Double(0, 0, 40,300));
+        this.shapes.add(new Rectangle2D.Double(0, 0, 300, 10));
+        Font font1 = new Font("Brush Script MT", Font.PLAIN, 60);
+        Font font2 = new Font("Century Gothic", Font.PLAIN, 60);
+        this.shapes.add(font1.createGlyphVector(this.g2d.getFontRenderContext(), "Mila").getOutline());
+        this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Ralf").getOutline());
+        this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Henk").getOutline());
+
+        this.rng = new Random();
+        this.indexArt = rng.nextInt(this.art.size());
+        this.indexShape = rng.nextInt(this.shapes.size());
     }
 
     public void draw(){
-        g2d.setBackground(Color.BLUE);
+        g2d.setBackground(Color.getHSBColor(getFloatRGB(148), getFloatRGB(201), getFloatRGB(205)));
         g2d.clearRect(0,0, 1920, 880);
 
-        g2d.drawImage(this.walkCycle[this.indexAnimation % 7], AffineTransform.getTranslateInstance(canvas.getWidth()/2, canvas.getHeight()/2), null);
+        Shape formClip = this.shapes.get(this.indexShape);
+        Shape clip = AffineTransform.getTranslateInstance(this.mousePos.getX() - this.getHalfWidth(this.indexShape), this.mousePos.getY() - this.getHalfHeight(this.indexShape)).createTransformedShape(formClip);
+        this.g2d.setClip(clip);
+
+        this.g2d.drawImage(this.art.get(this.indexArt), AffineTransform.getScaleInstance(this.getScaleArt(), this.getScaleArt()), null);
+        this.g2d.setClip(null);
+    }
+
+    public float getFloatRGB(int f){
+        return (float)f/256.f;
+    }
+
+    public double getScaleArt(){
+        double scaleW = canvas.getWidth()/(double)this.art.get(this.indexArt).getWidth();
+        double scaleH = canvas.getHeight()/(double)this.art.get(this.indexArt).getHeight();
+        if (scaleH > scaleW){
+            return scaleH;
+        } else {
+            return scaleW;
+        }
+    }
+
+    public int getHalfHeight(int index){
+        if (index == 0){
+            return 150;
+        } else if (index == 1){
+            return 5;
+        } else if(index == 2 || index == 3 || index == 4){
+            return 0;
+        }
+        return 0;
+    }
+
+    public int getHalfWidth(int index){
+        if (index == 0){
+            return 20;
+        } else if(index == 1){
+            return 150;
+        } else if(index == 2 || index == 3 || index == 4){
+            return 70;
+        }
+        return 0;
     }
 
     public String getTitle(){ return this.title; }
