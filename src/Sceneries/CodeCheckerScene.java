@@ -40,7 +40,7 @@ public class CodeCheckerScene implements Scenery {
         this.endScene = endScene;
 
         this.hBox = new HBox();
-        this.correctAnswers = new ArrayList<>(Arrays.asList(14, 1, 3, 7));
+        this.correctAnswers = new ArrayList<>(Arrays.asList(14, 1, 3, 7, 13));
         this.checkBoxes = new ArrayList<>(this.correctAnswers.size());
 
         for (int i = 1; i <= this.correctAnswers.size(); ++i){

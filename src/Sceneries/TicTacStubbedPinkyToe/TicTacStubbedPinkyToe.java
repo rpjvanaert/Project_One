@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -28,6 +29,8 @@ public class TicTacStubbedPinkyToe extends Application {
     private VBox vBox;
     private HBox hBox;
     private Button buttonNewGame;
+    private Button buttonToggleImages;
+    private javafx.scene.control.Label labelToggle;
 
     private BufferedImage milaIMG;
     private BufferedImage ralfIMG;
@@ -41,8 +44,13 @@ public class TicTacStubbedPinkyToe extends Application {
     private boolean tie = false;
 
     private ToeLogic toeLogic;
+    private PictureHandler pictureHandler;
+    private int imagesShuffled = 2;
     private int player;
     private int winner = 0;
+    private int[][] imgMila = new int[amountTiles][amountTiles];
+    private int[][] imgRalf = new int[amountTiles][amountTiles];
+    private int[][] imgAll = new int[amountTiles][amountTiles];
 
 
     @Override
@@ -52,15 +60,18 @@ public class TicTacStubbedPinkyToe extends Application {
         this.canvas = new Canvas(width,height);
         this.g2d = new FXGraphics2D(this.canvas.getGraphicsContext2D());
         this.toeLogic = new ToeLogic(amountTiles, amountTiles);
+        this.pictureHandler = new PictureHandler();
+
+
         Font font = new Font("Verdana", Font.PLAIN, 110);
         this.shapeX = font.createGlyphVector(this.g2d.getFontRenderContext(), "X").getOutline();
         this.shapeO = font.createGlyphVector(this.g2d.getFontRenderContext(), "O").getOutline();
         this.shapeW = font.createGlyphVector(this.g2d.getFontRenderContext(), "YOU WON").getOutline();
         this.shapeT = font.createGlyphVector(this.g2d.getFontRenderContext(), "It's a tie...").getOutline();
 
-        File milaFile = new File("resource/mila.jpg");
+        File milaFile = new File("resource/StubbedPinkyToe/Mila/annabethChase.jfif");
         this.milaIMG = ImageIO.read(milaFile);
-        File ralfFile = new File("resource/tomConfused.jpeg");
+        File ralfFile = new File("resource/StubbedPinkyToe/Ralf/percyJackson.jfif");
         this.ralfIMG = ImageIO.read(ralfFile);
         currentPlayerIMG = milaIMG;
 
@@ -75,7 +86,23 @@ public class TicTacStubbedPinkyToe extends Application {
             this.winner = 0;
         });
 
-        this.hBox.getChildren().addAll(this.buttonNewGame);
+        this.buttonToggleImages = new Button("Toggle signs");
+        this.buttonToggleImages.setOnAction(event -> {
+            this.toggleSign();
+            String space = "  ";
+            if (this.imagesShuffled == 0){
+                this.labelToggle.setText(space + "Images sorted per person" +  space);
+            } else if (this.imagesShuffled == 1){
+                this.labelToggle.setText(space + "Images shuffled over 2 persons" + space);
+            } else if (this.imagesShuffled == 2){
+                this.labelToggle.setText(space + "XO XO" +  space);
+            }
+        });
+
+        this.labelToggle = new Label("  XO XO  ");
+
+
+        this.hBox.getChildren().addAll(this.buttonNewGame, this.buttonToggleImages, this.labelToggle);
         this.vBox.getChildren().addAll(this.hBox, this.canvas);
         primaryStage.setScene(new Scene(this.vBox));
         primaryStage.setTitle("Tic Tac Stub Toe");
@@ -88,10 +115,14 @@ public class TicTacStubbedPinkyToe extends Application {
             if (p2d != null && !this.won){
                 if (this.toeLogic.placePos(p2d, this.player)){
                     if (this.player == 1){
+                        this.imgMila[(int)p2d.getX()][(int)p2d.getY()] = this.pictureHandler.getMilaInt();
+                        this.imgAll[(int)p2d.getX()][(int)p2d.getY()] = this.pictureHandler.getInt();
                         this.player = 2;
                         currentPlayerIMG = this.ralfIMG;
                     } else {
                         this.player = 1;
+                        this.imgRalf[(int)p2d.getX()][(int)p2d.getY()] = this.pictureHandler.getRalfInt();
+                        this.imgAll[(int)p2d.getX()][(int)p2d.getY()] = this.pictureHandler.getInt();
                         currentPlayerIMG = this.milaIMG;
                     }
                 }
@@ -114,6 +145,8 @@ public class TicTacStubbedPinkyToe extends Application {
         this.drawToeLogic();
         if (this.won){
             this.drawWon();
+        } else if (this.tie){
+            this.drawTie();
         }
     }
 
@@ -158,19 +191,65 @@ public class TicTacStubbedPinkyToe extends Application {
             for (int y = 0; y < amountTiles; ++y){
                 int value = values[x][y];
                 if (value == 1){
-                    int px = x * height/amountTiles;
-                    int py = (y + 1) * height/amountTiles;
-                    this.g2d.fill(AffineTransform.getTranslateInstance(px, py).createTransformedShape(this.shapeX));
+                    if (this.imagesShuffled == 0){
+                        BufferedImage chosen = this.pictureHandler.getMilaIMG(this.imgMila[x][y]);
+                        drawChosenIMG(x, y, chosen);
+                    } else if (this.imagesShuffled == 1){
+                        BufferedImage chosen = this.pictureHandler.getIMG(this.imgAll[x][y]);
+                        drawChosenIMG(x, y, chosen);
+                    } else if (this.imagesShuffled == 2){
+                        this.g2d.fill(AffineTransform.getTranslateInstance(x * height/amountTiles, (y + 1) * height/amountTiles).createTransformedShape(this.shapeX));
+                    }
+
                 } else if (value == 2){
-                    this.g2d.fill(AffineTransform.getTranslateInstance(x * height/amountTiles, (y + 1) * height/amountTiles).createTransformedShape(this.shapeO));
+                    if (this.imagesShuffled == 0){
+                        BufferedImage chosen = this.pictureHandler.getRalfIMG(this.imgRalf[x][y]);
+                        drawChosenIMG(x, y, chosen);
+                    } else if (this.imagesShuffled == 1){
+                        BufferedImage chosen = this.pictureHandler.getIMG(this.imgAll[x][y]);
+                        drawChosenIMG(x, y, chosen);
+                    } else if (this.imagesShuffled == 2){
+                        this.g2d.fill(AffineTransform.getTranslateInstance(x * height/amountTiles, (y + 1) * height/amountTiles).createTransformedShape(this.shapeO));
+                    }
                 }
             }
+        }
+    }
+
+    private void drawChosenIMG(int x, int y, BufferedImage chosen) {
+        AffineTransform at = new AffineTransform();
+        double scale = getScale(chosen, height/amountTiles, height/amountTiles);
+        at.scale(scale, scale);
+        at.translate((x * height/amountTiles) / scale, ((y) * height/amountTiles) / scale);
+        this.g2d.drawImage(chosen, at, null);
+    }
+
+    public double getScale(BufferedImage img, int widthM, int heightM){
+        double scaleWidth = (double)widthM / (double)img.getWidth();
+        double scaleHeight = (double)heightM / (double)img.getHeight();
+        if (scaleHeight < scaleWidth){
+            return scaleHeight;
+        } else {
+            return scaleWidth;
+        }
+    }
+
+    public void toggleSign(){
+        this.imagesShuffled++;
+        if (this.imagesShuffled > 2){
+            this.imagesShuffled = 0;
         }
     }
 
     public void drawWon(){
         this.g2d.setPaint(Color.GREEN);
         this.g2d.fill(AffineTransform.getTranslateInstance(height/2, height/2).createTransformedShape(this.shapeW));
+        this.g2d.setPaint(Color.WHITE);
+    }
+
+    public void drawTie(){
+        this.g2d.setPaint(Color.YELLOW);
+        this.g2d.fill(AffineTransform.getTranslateInstance(height/2, height/2).createTransformedShape(this.shapeT));
         this.g2d.setPaint(Color.WHITE);
     }
 
