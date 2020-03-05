@@ -46,14 +46,14 @@ public class OpeningScene implements Scenery{
         this.welcomeTitle.setFill(Color.CADETBLUE);
         this.welcomeTitle.setEffect(new Glow());
 
-        this.explanation = new Text("You will have N long code of numbers,\nthat will complete this game, enjoy everything in this game!\n");
+        this.explanation = new Text("You will have a 6 number long code,\nthat will complete this game, enjoy everything in this game!\n");
         this.explanation.setStyle("-fx-font: 45 Leelawadee;");
         this.explanation.setFill(Color.WHITE);
         this.explanation.setEffect(new Shadow());
 
-        this.smallLetters = new Text("\tALSO: LOOK AT THE WINDOW TITLE FOR TIPS");
+        this.smallLetters = new Text("\tALSO: LOOK AT THE WINDOW TITLE FOR TIPS, EVERYTIME");
         this.smallLetters.setStyle("-fx-font: 15 Arial; -fx-base: #73a274;");
-        this.smallLetters.setFill(Color.LIGHTBLUE);
+        this.smallLetters.setFill(Color.CADETBLUE);
 
         this.textFlow.getChildren().addAll(this.welcomeTitle, this.explanation, this.smallLetters);
 
@@ -62,7 +62,7 @@ public class OpeningScene implements Scenery{
         this.imageViewSolo.setFitHeight(380);
 
         this.buttonReady = new Button("Ready? Player One!");
-        this.buttonReady.setStyle("-fx-font: 100 Leelawadee; -fx-border-color: transparent; -fx-border-width: 30; -fx-base: #2d46bf;");
+        this.buttonReady.setStyle("-fx-font: 100 Leelawadee; -fx-border-color: transparent; -fx-border-width: 30; -fx-base: #ffffff;");
         this.buttonReady.setOnAction(event -> {
             primaryStage.setScene(this.nextScene.getScene());
             primaryStage.setTitle(this.nextScene.getTitle());

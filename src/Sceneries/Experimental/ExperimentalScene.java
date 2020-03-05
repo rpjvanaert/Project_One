@@ -82,9 +82,9 @@ public class ExperimentalScene implements Scenery {
         try {
             BufferedImage image = ImageIO.read(new File("resource/sprite.png"));
             this.walkCycle = new BufferedImage[65];
-            for (int y = 0; y < 8; ++y){
+            for (int y = 4; y < 5; ++y){
                 for (int x = 0; x < 8; ++x){
-                    this.walkCycle[(y*8 + x)] = image.getSubimage(x * 64, y * 64, 64, 64);
+                    this.walkCycle[(x)] = image.getSubimage(x * 64, y * 64, 64, 64);
                 }
             }
         } catch (IOException e) {
@@ -113,7 +113,7 @@ public class ExperimentalScene implements Scenery {
         g2d.setBackground(Color.BLUE);
         g2d.clearRect(0,0, 1920, 880);
 
-        g2d.drawImage(this.walkCycle[this.indexAnimation % 64], AffineTransform.getTranslateInstance(canvas.getWidth()/2, canvas.getHeight()/2), null);
+        g2d.drawImage(this.walkCycle[this.indexAnimation % 7], AffineTransform.getTranslateInstance(canvas.getWidth()/2, canvas.getHeight()/2), null);
     }
 
     public String getTitle(){ return this.title; }
