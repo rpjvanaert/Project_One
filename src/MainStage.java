@@ -5,6 +5,7 @@ import Sceneries.End.EndScene;
 import Sceneries.Experimental.ExperimentalScene;
 import Sceneries.ScreenSaver.ScreenSaverScene;
 import Sceneries.BlobChase.BlobChaseScene;
+import Sceneries.TicTacStubbedPinkyToe.TicTacStubbedPinkyToeScene;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -23,7 +24,8 @@ public class MainStage extends Application {
         Scenery screenSaver = new ScreenSaverScene(primaryStage, player);
         Scenery experimental = new ExperimentalScene(primaryStage, player);
         Scenery runningMan = new BlobChaseScene(primaryStage, player);
-        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental, runningMan)), player);
+        Scenery stubbedPinkyToe = new TicTacStubbedPinkyToeScene(primaryStage, player);
+        Scenery index = new IndexScene(primaryStage, new ArrayList<>(Arrays.asList(welcome, clicker, screenSaver, experimental, runningMan, stubbedPinkyToe)), player);
         Scenery endScene = new EndScene(primaryStage, player);
         Scenery codeChecker = new CodeCheckerScene(primaryStage, endScene, player);
 
@@ -35,7 +37,8 @@ public class MainStage extends Application {
         clickerMSG.setNextScene(screenSaver);
         screenSaver.setNextScene(experimental);
         experimental.setNextScene(runningMan);
-        runningMan.setNextScene(index);
+        runningMan.setNextScene(stubbedPinkyToe);
+        stubbedPinkyToe.setNextScene(index);
         index.setNextScene(codeChecker);
         codeChecker.setNextScene(index);
 
