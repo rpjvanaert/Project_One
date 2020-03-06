@@ -2,8 +2,6 @@ package Sceneries.Experimental;
 
 import Sceneries.Player;
 import Sceneries.Scenery;
-import Sceneries.TicTacStubbedPinkyToe.PictureHandler;
-import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -58,7 +56,6 @@ public class ExperimentalScene implements Scenery {
             this.indexShape = this.rng.nextInt(this.shapes.size());
             this.indexArt = this.rng.nextInt(this.art.size());
             this.draw();
-            System.out.println(this.indexShape);
         });
 
         canvas.setOnMouseMoved(event -> {

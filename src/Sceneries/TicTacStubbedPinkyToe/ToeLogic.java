@@ -110,28 +110,6 @@ public class ToeLogic {
             }
         }
 
-//        int value;
-//        for (int x = 0; x < width - 3; ++x){
-//            for (int y = 0; y < height; ++y){
-//                value = this.checkPlaces(new Point2D.Double(x, y), new Point2D.Double(x + 1, y + 1), new Point2D.Double(x + 2, y + 2), new Point2D.Double(x + 3, y + 3));
-//                if (value == 1){
-//                    return 1;
-//                } else if (value == 2){
-//                    return 2;
-//                }
-//            }
-//        }
-//
-//        for (int x = 0; x < width - 3; ++x){
-//            for (int y = 0; y < height; ++y){
-//                value = this.checkPlaces(new Point2D.Double(x, y + 3), new Point2D.Double(x + 1, y + 2), new Point2D.Double(x + 2, y + 1), new Point2D.Double(x + 3, y));
-//                if (value == 1){
-//                    return 1;
-//                } else if (value == 2){
-//                    return 2;
-//                }
-//            }
-//        }
         return 0;
     }
 

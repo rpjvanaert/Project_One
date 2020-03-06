@@ -46,7 +46,7 @@ public class OpeningScene implements Scenery{
         this.welcomeTitle.setFill(Color.CADETBLUE);
         this.welcomeTitle.setEffect(new Glow());
 
-        this.explanation = new Text("You will have a 6 number long code,\nthat will complete this game, enjoy everything in this game!\n");
+        this.explanation = new Text("You will have a 5 number long code,\nthat will complete this game, enjoy everything in this game!\n");
         this.explanation.setStyle("-fx-font: 45 Leelawadee;");
         this.explanation.setFill(Color.WHITE);
         this.explanation.setEffect(new Shadow());
