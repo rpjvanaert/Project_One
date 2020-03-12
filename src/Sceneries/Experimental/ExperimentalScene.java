@@ -93,15 +93,19 @@ public class ExperimentalScene implements Scenery {
         }
 
         this.shapes = new ArrayList<>();
-        this.shapes.add(new Ellipse2D.Double(0, 0, 40,300));
-        this.shapes.add(new Rectangle2D.Double(0, 0, 300, 10));
-        Font font1 = new Font("Gabriola", Font.PLAIN, 60);
-        Font font2 = new Font("Century Gothic", Font.PLAIN, 60);
-        Font font3 = new Font("Century Gothic", Font.PLAIN, 30);
+        this.shapes.add(new Ellipse2D.Double(0, 0, 25,350));
+        this.shapes.add(new Rectangle2D.Double(0, 0, 400, 15));
+        Font font1 = new Font("Gabriola", Font.PLAIN, 80);
+        Font font2 = new Font("Century Gothic", Font.PLAIN, 80);
+        Font font3 = new Font("Century Gothic", Font.PLAIN, 40);
+        Font font4 = new Font("Papyrus", Font.PLAIN, 80);
         this.shapes.add(font1.createGlyphVector(this.g2d.getFontRenderContext(), "Mila").getOutline());
         this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Ralf").getOutline());
         this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Pila").getOutline());
         this.shapes.add(font3.createGlyphVector(this.g2d.getFontRenderContext(), "Logophilist").getOutline());
+        this.shapes.add(font2.createGlyphVector(this.g2d.getFontRenderContext(), "Nathan").getOutline());
+        this.shapes.add(font4.createGlyphVector(this.g2d.getFontRenderContext(), "Wallflower").getOutline());
+        this.shapes.add(font3.createGlyphVector(this.g2d.getFontRenderContext(), "(23)(-)(12)(-)(19)").getOutline());
 
 
         this.rng = new Random();
@@ -110,11 +114,15 @@ public class ExperimentalScene implements Scenery {
     }
 
     public void draw(){
-        g2d.setBackground(Color.getHSBColor(getFloatRGB(148), getFloatRGB(201), getFloatRGB(205)));
+//        g2d.setBackground(Color.getHSBColor(getFloatRGB(148), getFloatRGB(201), getFloatRGB(205)));
+        g2d.setBackground(Color.BLACK);
         g2d.clearRect(0,0, 1920, 880);
 
         Shape formClip = this.shapes.get(this.indexShape);
         Shape clip = AffineTransform.getTranslateInstance(this.mousePos.getX() - this.getHalfWidth(this.indexShape), this.mousePos.getY() - this.getHalfHeight(this.indexShape)).createTransformedShape(formClip);
+        g2d.setPaint(Color.WHITE);
+        g2d.setStroke(new BasicStroke(4.0f, BasicStroke.JOIN_ROUND, BasicStroke.CAP_ROUND));
+        g2d.draw(clip);
         this.g2d.setClip(clip);
 
         this.g2d.drawImage(this.art.get(this.indexArt), AffineTransform.getScaleInstance(this.getScaleArt(), this.getScaleArt()), null);
@@ -140,7 +148,7 @@ public class ExperimentalScene implements Scenery {
             return 150;
         } else if (index == 1){
             return 5;
-        } else if(index == 2 || index == 3 || index == 4 || index == 5 || index == 6){
+        } else if(index == 2 || index == 3 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8){
             return 0;
         }
         return 0;
@@ -151,9 +159,7 @@ public class ExperimentalScene implements Scenery {
             return 20;
         } else if(index == 1){
             return 150;
-        } else if(index == 2 || index == 3 || index == 4 || index == 5){
-            return 70;
-        } else if (index == 6){
+        } else if(index == 2 || index == 3 || index == 4 || index == 5 || index == 6 || index == 7 || index == 8){
             return 70;
         }
         return 0;
